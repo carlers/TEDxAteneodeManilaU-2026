@@ -14,7 +14,7 @@ app/
   registration/page.tsx     -> /registration\
   shop/page.tsx             -> /shop
 
-## COLORS - USE THESE
+## COLORS - USE THESE (TENTATIVE)
 These can be found in tailwind.config.js and globals.css\
 tedx-red: #eb0028    (TEDx Red - buttons)\
 tedx-black: #000000  (Black - headings)\
@@ -31,6 +31,8 @@ border: '#e5e7eb',      // Border gray\
 USE: className="bg-tedx-red text-tedx-white"\
 NEVER: className="bg-[#eb0028]"\
 
+## TO EDIT COLORS, FONTS, SIZES, GO TO tailwind.config.js and globals.css
+
 ## TYPOGRAPHY
 These can be found in tailwind.config.js and globals.css\
 Font: Helvetica -> Arial -> sans-serif\
@@ -41,14 +43,7 @@ text-heading    -> 1.5rem, Bold (page titles)\
 text-subheading -> 1rem, Regular (section titles)\
 text-body       -> 0.875rem, Regular (paragraphs)
 
-## CODING RULES
-
-1. CREATE FILES:
-   - Use `rafce` snippet
-   - Name: PascalCase.tsx (Button.tsx)
-
-
-2. STYLING RULES\
+## STYLING RULES
 USE TAILWIND DIRECTLY:\
 ✅ className="p-4 bg-primary text-white rounded-lg"\
 ❌ className="card" with .card { @apply p-4 bg-primary; }
@@ -57,7 +52,7 @@ USE TAILWIND DIRECTLY:\
 className="p-4 md:p-6 lg:p-8"\
 className="block md:flex lg:grid"
 
-## NEVER USE:
+## DON'T USE:
 - Inline styles: style={{ color: 'red' }}
 - CSS modules: .module.css files
 - @apply for simple utilities

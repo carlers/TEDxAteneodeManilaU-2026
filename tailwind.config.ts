@@ -1,3 +1,6 @@
+// exact values taken from brandbook: https://www.canva.com/design/DAG2lmWCloU/_7yJXSMJ5ExP9NkFsRjgdQ/edit?utm_content=DAG2lmWCloU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+// webdev onboarding slides: https://www.canva.com/design/DAG-qFFEGTc/ibGCOyZs_Q-9_R4ufsfqxw/edit?utm_content=DAG-qFFEGTc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
 import type { Config } from 'tailwindcss'
 
 const config: Config = {

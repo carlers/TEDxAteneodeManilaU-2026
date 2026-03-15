@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
+import { League_Gothic } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+
+const leagueGothic = League_Gothic({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-league-gothic",
+  display: "swap",
+});
 
 
 export const metadata: Metadata = {
@@ -86,7 +94,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="font-sans antialiased"
+        className={`font-sans antialiased ${leagueGothic.variable}`}
       >
         <Navbar />
         {children}

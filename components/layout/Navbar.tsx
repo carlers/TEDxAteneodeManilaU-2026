@@ -70,7 +70,7 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`sticky top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-md shadow-lg" : "bg-black"
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-md shadow-lg" : "bg-black"
           } p-4`}
       >
         <div className="container mx-auto px-4">

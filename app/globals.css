@@ -90,3 +90,31 @@
     }
   }
 }
+
+@keyframes walk-right {
+  from { transform: translateX(-120vw); }
+  to   { transform: translateX(120vw); }
+}
+
+.walk-fig-1 {
+  animation-name: walk-right;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+}
+
+.walk-fig-2 {
+  animation-name: walk-right;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: -5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walk-fig-1,
+  .walk-fig-2 {
+    animation-name: none;
+  }
+}

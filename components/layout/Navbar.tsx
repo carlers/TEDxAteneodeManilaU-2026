@@ -71,18 +71,18 @@ export default function Navbar() {
       <nav
         ref={navRef}
         className={`sticky top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-md shadow-lg" : "bg-black"
-          } p-4`}
+          } px-3 py-4 sm:p-4`}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between text-white font-bold text-sm xl:text-base py-1 xl:px-16 px-0 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+        <div className="mx-auto w-full px-0 sm:px-6 lg:px-8 xl:px-10">
+          <div className="flex items-center justify-between gap-3 py-1 text-sm font-bold text-white xl:text-base lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-8">
             <div className="flex-shrink-0 lg:justify-self-start">
               <Link href="/">
-                <div className="w-52 xl:w-72 relative">
+                <div className="relative w-32 min-[360px]:w-36 sm:w-44 xl:w-56">
                   <Image
                     src="/TEDxADMU-LOGO.png"
                     alt="TEDx"
-                    width={400}
-                    height={200}
+                    width={200}
+                    height={100}
                     className="w-full h-auto"
                     priority
                   />
@@ -91,7 +91,7 @@ export default function Navbar() {
             </div>
 
             <div className="hidden lg:block lg:justify-self-center">
-              <div className="flex items-baseline space-x-8 text-white font-bold text-sm xl:text-base">
+              <div className="flex items-baseline justify-center gap-8 text-sm font-bold text-white xl:text-base">
                 <Link href="/">
                   <span
                     className={`${navUnderlineClass} mx-3 py-2 rounded-md transition duration-300`}
@@ -123,7 +123,7 @@ export default function Navbar() {
                     </Link>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`h-4 w-4 transition-transform duration-300 ${aboutDropdownOpen ? "rotate-180" : ""
+                      className={`h-4 w-4 text-tedx-red transition-transform duration-300 ${aboutDropdownOpen ? "rotate-180" : ""
                         }`}
                       fill="none"
                       viewBox="0 0 24 24"
@@ -132,7 +132,7 @@ export default function Navbar() {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={5}
                         d="M19 9l-7 7-7-7"
                       />
                     </svg>
@@ -199,7 +199,7 @@ export default function Navbar() {
                     </Link>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className={`h-4 w-4 transition-transform duration-300 ${eventDetailsDropdownOpen ? "rotate-180" : ""
+                      className={`h-4 w-4 text-tedx-red transition-transform duration-300 ${eventDetailsDropdownOpen ? "rotate-180" : ""
                         }`}
                       fill="none"
                       viewBox="0 0 24 24"
@@ -208,7 +208,7 @@ export default function Navbar() {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={5}
                         d="M19 9l-7 7-7-7"
                       />
                     </svg>
@@ -272,13 +272,11 @@ export default function Navbar() {
               <RegisterButton />
             </div>
 
-            <div className="lg:hidden">
+            <div className="flex shrink-0 items-center gap-2 self-center sm:gap-3 lg:hidden">
               <RegisterButton />
-            </div>
-            <div className="lg:hidden">
               <button
                 className={`${mobileMenuOpen ? "text-tedx-red" : "text-tedx-red"
-                  } hover:text-tedx-red inline-flex items-center justify-center p-2 rounded-md transition-all duration-300`}
+                  } inline-flex h-9 w-9 items-center justify-center self-center rounded-md text-tedx-red transition-all duration-300 hover:text-tedx-red sm:h-10 sm:w-10`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >

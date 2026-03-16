@@ -75,6 +75,32 @@
       theme("colors.tedx-black-22") 0%,
       transparent 100%
     );
+    --tedx-top-picks-heading-gradient: linear-gradient(
+        180deg,
+        transparent 12.689%,
+        theme("colors.tedx-black-43") 90.667%
+      ),
+      linear-gradient(
+        90deg,
+        theme("colors.tedx-accent") 0%,
+        theme("colors.tedx-accent") 100%
+      );
+    --tedx-top-picks-heading-mask-sharp: linear-gradient(
+      180deg,
+      theme("colors.tedx-black") 0%,
+      theme("colors.tedx-black-96") 34%,
+      theme("colors.tedx-black-78") 56%,
+      theme("colors.tedx-black-32") 78%,
+      transparent 100%
+    );
+    --tedx-top-picks-heading-mask-blur: linear-gradient(
+      180deg,
+      transparent 0%,
+      theme("colors.tedx-black-10") 26%,
+      theme("colors.tedx-black-42") 52%,
+      theme("colors.tedx-black-82") 74%,
+      theme("colors.tedx-black") 100%
+    );
     --tedx-accent-glow-shadow: theme("colors.tedx-accent-80");
     --tedx-accent-glow-shadow-soft: theme("colors.tedx-accent-45");
     --tedx-accent-color: theme("colors.tedx-accent");
@@ -127,6 +153,10 @@
 
   .tedx-popover-shadow {
     box-shadow: 0 18px 50px theme("colors.tedx-black-45");
+  }
+
+  .tedx-chevron-glow {
+    filter: drop-shadow(0 0 18px theme("colors.tedx-white-20"));
   }
 
   .nav-link-underline:hover::after,

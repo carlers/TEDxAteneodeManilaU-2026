@@ -4,9 +4,8 @@ import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 
 const GALLERY_WIDTH = 1440;
 const GALLERY_HEIGHT = 667;
-const MIN_DRAG_PROGRESS = 0;
-const MAX_DRAG_PROGRESS = 1;
-const KEYBOARD_DRAG_STEP = 0.08;
+const KEYBOARD_DRAG_STEP = 120;
+const ROW_COPY_MULTIPLIERS = [-1, 0, 1] as const;
 
 type Frame = {
   left: number;
@@ -32,7 +31,7 @@ type GalleryTile = {
 type DragState = {
   pointerId: number | null;
   startX: number;
-  startProgress: number;
+  startOffset: number;
 };
 
 const topRowTiles: GalleryTile[] = [
@@ -169,10 +168,6 @@ const dragStickerFrame: Frame = {
   height: 100,
 };
 
-function clampProgress(nextProgress: number) {
-  return Math.max(MIN_DRAG_PROGRESS, Math.min(MAX_DRAG_PROGRESS, nextProgress));
-}
-
 function toPercent(value: number, base: number) {
   return `${(value / base) * 100}%`;
 }
@@ -186,78 +181,100 @@ function frameStyle(frame: Frame) {
   };
 }
 
-function GalleryRow({ tiles }: { tiles: GalleryTile[] }) {
+function getRepeatWidth(tiles: GalleryTile[]) {
+  const minLeft = Math.min(...tiles.map((tile) => tile.frame.left));
+  const maxRight = Math.max(
+    ...tiles.map((tile) => tile.frame.left + tile.frame.width)
+  );
+
+  return maxRight - minLeft;
+}
+
+function wrapOffset(offset: number, repeatWidth: number) {
+  const wrappedOffset = offset % repeatWidth;
+
+  return wrappedOffset >= 0 ? wrappedOffset : wrappedOffset + repeatWidth;
+}
+
+function GalleryRow({
+  tiles,
+  repeatWidth,
+}: {
+  tiles: GalleryTile[];
+  repeatWidth: number;
+}) {
   return (
     <>
-      {tiles.map((tile) => (
-        <div
-          key={tile.id}
-          aria-hidden="true"
-          className="absolute overflow-hidden"
-          style={frameStyle(tile.frame)}
-        >
+      {ROW_COPY_MULTIPLIERS.flatMap((copyMultiplier) =>
+        tiles.map((tile) => (
           <div
-            className="absolute bg-cover bg-no-repeat"
-            style={{
-              ...tile.image,
-              backgroundImage: `url("${tile.src}")`,
-              backgroundPosition: "center",
-            }}
-          />
-        </div>
-      ))}
+            key={`${tile.id}-${copyMultiplier}`}
+            aria-hidden="true"
+            className="absolute overflow-hidden"
+            style={frameStyle({
+              ...tile.frame,
+              left: tile.frame.left + copyMultiplier * repeatWidth,
+            })}
+          >
+            <div
+              className="absolute bg-cover bg-no-repeat"
+              style={{
+                ...tile.image,
+                backgroundImage: `url("${tile.src}")`,
+                backgroundPosition: "center",
+              }}
+            />
+          </div>
+        ))
+      )}
     </>
   );
 }
 
-function getRightOverflow(tiles: GalleryTile[]) {
-  return Math.max(...tiles.map((tile) => tile.frame.left + tile.frame.width)) - GALLERY_WIDTH;
-}
-
-function getLeftOverflow(tiles: GalleryTile[]) {
-  return Math.abs(Math.min(...tiles.map((tile) => tile.frame.left)));
-}
-
 function GalleryStage({ className }: { className: string }) {
-  const [dragProgress, setDragProgress] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const dragStateRef = useRef<DragState>({
     pointerId: null,
     startX: 0,
-    startProgress: 0,
+    startOffset: 0,
   });
 
-  const topRowTravel = getRightOverflow(topRowTiles);
-  const bottomRowTravel = getLeftOverflow(bottomRowTiles);
+  const topRowRepeatWidth = getRepeatWidth(topRowTiles);
+  const bottomRowRepeatWidth = getRepeatWidth(bottomRowTiles);
 
-  function handleDragStart(event: PointerEvent<HTMLButtonElement>) {
+  function handleDragStart(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
     dragStateRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
-      startProgress: dragProgress,
+      startOffset: dragOffset,
     };
 
     event.currentTarget.setPointerCapture(event.pointerId);
     setIsDragging(true);
   }
 
-  function handleDragMove(event: PointerEvent<HTMLButtonElement>) {
+  function handleDragMove(event: PointerEvent<HTMLDivElement>) {
     const dragState = dragStateRef.current;
 
     if (dragState.pointerId !== event.pointerId) {
       return;
     }
 
-    const stageWidth = stageRef.current?.getBoundingClientRect().width ?? GALLERY_WIDTH;
-    const nextProgress = clampProgress(
-      dragState.startProgress - (event.clientX - dragState.startX) / stageWidth
-    );
+    const stageWidth =
+      stageRef.current?.getBoundingClientRect().width ?? GALLERY_WIDTH;
+    const designSpaceDelta =
+      ((event.clientX - dragState.startX) / stageWidth) * GALLERY_WIDTH;
 
-    setDragProgress(nextProgress);
+    setDragOffset(dragState.startOffset + designSpaceDelta);
   }
 
-  function handleDragEnd(event: PointerEvent<HTMLButtonElement>) {
+  function handleDragEnd(event: PointerEvent<HTMLDivElement>) {
     if (dragStateRef.current.pointerId !== event.pointerId) {
       return;
     }
@@ -272,49 +289,56 @@ function GalleryStage({ className }: { className: string }) {
     setIsDragging(false);
   }
 
-  function handleDragKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+  function handleDragKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      setDragProgress((currentProgress) =>
-        clampProgress(currentProgress + KEYBOARD_DRAG_STEP)
-      );
+      setDragOffset((currentOffset) => currentOffset - KEYBOARD_DRAG_STEP);
     }
 
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      setDragProgress((currentProgress) =>
-        clampProgress(currentProgress - KEYBOARD_DRAG_STEP)
-      );
+      setDragOffset((currentOffset) => currentOffset + KEYBOARD_DRAG_STEP);
     }
 
-    if (event.key === "Home") {
+    if (event.key === "Home" || event.key === "Escape") {
       event.preventDefault();
-      setDragProgress(MIN_DRAG_PROGRESS);
-    }
-
-    if (event.key === "End") {
-      event.preventDefault();
-      setDragProgress(MAX_DRAG_PROGRESS);
+      setDragOffset(0);
     }
   }
 
-  const topRowTransform = `translate3d(-${(topRowTravel / GALLERY_WIDTH) * 100 * dragProgress}%, 0, 0)`;
-  const bottomRowTransform = `translate3d(${(bottomRowTravel / GALLERY_WIDTH) * 100 * dragProgress}%, 0, 0)`;
-  const motionClassName = isDragging
-    ? "will-change-transform"
-    : "transition-transform duration-300 ease-out will-change-transform";
+  const topRowTransform = `translate3d(${toPercent(
+    wrapOffset(dragOffset, topRowRepeatWidth),
+    GALLERY_WIDTH
+  )}, 0, 0)`;
+  const bottomRowTransform = `translate3d(${toPercent(
+    wrapOffset(-dragOffset * 0.88, bottomRowRepeatWidth),
+    GALLERY_WIDTH
+  )}, 0, 0)`;
+  const motionClassName = "will-change-transform";
+  const dragHandleClassName =
+    "pointer-events-none absolute z-10 flex items-center justify-center rounded-full bg-[#d82d33] text-white";
+  const dragCursorClassName = isDragging ? "cursor-grabbing" : "cursor-grab";
 
   return (
     <div
       ref={stageRef}
-      className={`relative overflow-hidden bg-black select-none ${className}`}
+      aria-label="Past moments gallery. Drag left or right to explore continuously."
+      className={`relative overflow-hidden bg-black select-none outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${dragCursorClassName} ${className}`}
+      style={{ touchAction: "pan-y" }}
+      tabIndex={0}
+      onKeyDown={handleDragKeyDown}
+      onLostPointerCapture={handleLostPointerCapture}
+      onPointerCancel={handleDragEnd}
+      onPointerDown={handleDragStart}
+      onPointerMove={handleDragMove}
+      onPointerUp={handleDragEnd}
     >
       <div
         aria-hidden="true"
         className={`pointer-events-none absolute inset-0 ${motionClassName}`}
         style={{ transform: topRowTransform }}
       >
-        <GalleryRow tiles={topRowTiles} />
+        <GalleryRow repeatWidth={topRowRepeatWidth} tiles={topRowTiles} />
       </div>
 
       <div
@@ -322,25 +346,27 @@ function GalleryStage({ className }: { className: string }) {
         className={`pointer-events-none absolute inset-0 ${motionClassName}`}
         style={{ transform: bottomRowTransform }}
       >
-        <GalleryRow tiles={bottomRowTiles} />
+        <GalleryRow repeatWidth={bottomRowRepeatWidth} tiles={bottomRowTiles} />
       </div>
 
-      <button
-        type="button"
-        aria-label="Drag to explore more past moments"
-        className={`absolute flex touch-none items-center justify-center rounded-full bg-[#d82d33] text-white outline-none ${isDragging ? "cursor-grabbing" : "cursor-grab"} focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
+      <div
+        aria-hidden="true"
+        className={`${dragHandleClassName} bottom-4 right-4 size-16 sm:bottom-5 sm:right-5 sm:size-[72px] lg:hidden`}
+      >
+        <span className="rotate-[10deg] text-sm font-bold leading-none sm:text-base">
+          DRAG
+        </span>
+      </div>
+
+      <div
+        aria-hidden="true"
+        className={`${dragHandleClassName} hidden lg:flex`}
         style={frameStyle(dragStickerFrame)}
-        onKeyDown={handleDragKeyDown}
-        onLostPointerCapture={handleLostPointerCapture}
-        onPointerCancel={handleDragEnd}
-        onPointerDown={handleDragStart}
-        onPointerMove={handleDragMove}
-        onPointerUp={handleDragEnd}
       >
         <span className="rotate-[10deg] text-[clamp(0.72rem,1.4vw,1.125rem)] font-bold leading-none">
           DRAG
         </span>
-      </button>
+      </div>
     </div>
   );
 }

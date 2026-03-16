@@ -20,7 +20,7 @@ import {
 
 export default function AboutPage() {
   return (
-    <div className="flex min-h-screen flex-col font-sans text-tedx-white bg-black">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-tedx-black font-sans text-tedx-white">
       <LandingSection />
       <AboutTedxAteneoSection />
       <MissionVisionSection />

@@ -1,10 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Gothic&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+
   body {
-    @apply font-sans text-body text-black bg-white;
+    @apply bg-tedx-white font-sans text-body text-tedx-black;
     line-height: 1.6;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -22,8 +25,59 @@
   }
   :root {
     color-scheme: light;
-    --text-color: #000000;
-    --bg-color: #ffffff;
+    --text-color: theme("colors.tedx-black");
+    --bg-color: theme("colors.tedx-white");
+    --tedx-legacy-mask-top-left: linear-gradient(
+      135deg,
+      theme("colors.tedx-black") 0%,
+      theme("colors.tedx-black") 32%,
+      theme("colors.tedx-black-85") 54%,
+      transparent 78%
+    );
+    --tedx-legacy-mask-top-right: linear-gradient(
+      225deg,
+      theme("colors.tedx-black") 0%,
+      theme("colors.tedx-black") 32%,
+      theme("colors.tedx-black-85") 54%,
+      transparent 78%
+    );
+    --tedx-legacy-mask-bottom-left: linear-gradient(
+      45deg,
+      theme("colors.tedx-black") 0%,
+      theme("colors.tedx-black") 32%,
+      theme("colors.tedx-black-85") 54%,
+      transparent 78%
+    );
+    --tedx-legacy-mask-bottom-right: linear-gradient(
+      315deg,
+      theme("colors.tedx-black") 0%,
+      theme("colors.tedx-black") 32%,
+      theme("colors.tedx-black-85") 54%,
+      transparent 78%
+    );
+    --tedx-legacy-x-gradient: radial-gradient(
+      circle at center,
+      theme("colors.tedx-accent-glow") 0%,
+      theme("colors.tedx-accent") 42%,
+      theme("colors.tedx-accent-deep") 70%,
+      theme("colors.tedx-accent-shadow") 100%
+    );
+    --tedx-speaker-bridge-gradient: linear-gradient(
+      90deg,
+      theme("colors.tedx-black") 0.13398%,
+      theme("colors.tedx-black") 72.325%,
+      theme("colors.tedx-accent-strong-82") 81.5%,
+      theme("colors.tedx-accent-strong") 85.461%,
+      theme("colors.tedx-accent-strong") 100%
+    );
+    --tedx-mobile-image-fade: linear-gradient(
+      180deg,
+      theme("colors.tedx-black-22") 0%,
+      transparent 100%
+    );
+    --tedx-accent-glow-shadow: theme("colors.tedx-accent-80");
+    --tedx-accent-glow-shadow-soft: theme("colors.tedx-accent-45");
+    --tedx-accent-color: theme("colors.tedx-accent");
   }
    body {
     color: var(--text-color);
@@ -32,13 +86,27 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --text-color: #000000;
-      --bg-color: #ffffff;
+      --text-color: theme("colors.tedx-black");
+      --bg-color: theme("colors.tedx-white");
     }
   }
 }
 
 @layer components {
+  .font-league-gothic {
+    font-family: "League Gothic", "Arial Narrow", "Helvetica Neue Condensed",
+      sans-serif;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .nav-link-underline::after {
     content: "";
     position: absolute;
@@ -46,11 +114,19 @@
     bottom: 9px;
     height: 2px;
     width: 100%;
-    background-color: #eb0028;
+    background-color: theme("colors.tedx-red");
     transform-origin: left center;
     transform: scaleX(0) scaleY(0.6);
     opacity: 0;
     filter: blur(4px);
+  }
+
+  .tedx-section-heading-shadow {
+    filter: drop-shadow(0 4px 25px theme("colors.tedx-black-35"));
+  }
+
+  .tedx-popover-shadow {
+    box-shadow: 0 18px 50px theme("colors.tedx-black-45");
   }
 
   .nav-link-underline:hover::after,

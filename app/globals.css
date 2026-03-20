@@ -171,6 +171,52 @@
     filter: blur(4px);
   }
 
+  .team-marquee-viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .team-marquee-track {
+    display: flex;
+    width: max-content;
+    gap: 1.9rem;
+    will-change: transform;
+  }
+
+  @media (min-width: 640px) {
+    .team-marquee-track {
+      gap: 3.5rem;
+    }
+  }
+
+  .team-marquee-left {
+    animation: team-marquee-left 40s linear infinite;
+  }
+
+  .team-marquee-right {
+    animation: team-marquee-right 40s linear infinite;
+  }
+
+  @keyframes team-marquee-left {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes team-marquee-right {
+    from {
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
   @keyframes nav-underline-pop {
     0% {
       transform: scaleX(0) scaleY(0.55);

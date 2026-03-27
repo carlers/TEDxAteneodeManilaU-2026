@@ -1,9 +1,56 @@
+const imgBg = "/agenda/bg.svg";
+
+const schedule = [
+  { event: "Registration", time: "12:00 PM" },
+  { event: "Opening Ceremony", time: "12:00 PM" },
+  { event: "Welcome Speech", time: "12:00 PM" },
+  { event: "Talk 1", time: "12:00 PM" },
+  { event: "Talk 2", time: "12:00 PM" },
+  { event: "Lunch Break", time: "12:00 PM" },
+  { event: "Talk 3", time: "12:00 PM" },
+  { event: "Talk 4", time: "12:00 PM" },
+  { event: "Vote of Thanks", time: "12:00 PM" },
+  { event: "Closing Ceremony", time: "12:00 PM" },
+];
+
 export default function AgendaSection() {
   return (
-    <section id="agenda" className="w-full bg-black py-16">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold">AGENDA</h2>
-        {/* Content goes here */}
+    <section id="agenda" className="w-full bg-black relative overflow-hidden">
+      {/* Background image */}
+      <div
+        className="absolute left-0 right-0 top-[6.4%] pointer-events-none"
+        style={{ aspectRatio: "1440 / 686.458" }}
+      >
+        <img src={imgBg} alt="" className="w-full h-full object-fill" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center px-4">
+        {/* Heading */}
+        <h2
+          className="font-display text-white text-center leading-none tracking-[-0.04em]"
+          style={{
+            fontSize: "clamp(3rem, 8.9vw, 128px)",
+            textShadow: "0 4px 25px rgba(0,0,0,.35)",
+          }}
+        >
+          THE <span className="text-tedx-red">AGENDA</span>
+        </h2>
+
+        {/* Schedule table */}
+        <div className="mt-[clamp(1rem,5vw,20px)] w-full max-w-[665px] flex flex-col gap-1">
+          {schedule.map(({ event, time }) => (
+            <div
+              key={event}
+              className="flex items-center gap-2.5 font-bold leading-[36px]"
+              style={{ fontSize: "clamp(16px, 1.94vw, 28px)" }}
+            >
+              <p className="flex-1 text-right text-white">{event}</p>
+              <p className="w-[52px] text-center text-tedx-red shrink-0">X</p>
+              <p className="flex-1 text-left text-white">{time}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

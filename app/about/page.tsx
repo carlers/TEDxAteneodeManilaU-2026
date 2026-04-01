@@ -8,6 +8,7 @@
  * @route /about
  */
 import {
+  AboutTedTedxSection,
   AboutTedxAteneoSection,
   GetInvolvedSection,
   LandingSection,
@@ -22,6 +23,7 @@ export default function AboutPage() {
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden bg-tedx-black font-sans text-tedx-white">
       <LandingSection />
+      <AboutTedTedxSection />
       <AboutTedxAteneoSection />
       <MissionVisionSection />
       <LegacySection />

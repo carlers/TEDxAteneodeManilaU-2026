@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { leagueGothic, inter } from "@/app/fonts";
 
 
 export const metadata: Metadata = {
@@ -84,7 +85,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${leagueGothic.variable} ${inter.variable}`}>
       <body
         className="font-sans antialiased"
       >

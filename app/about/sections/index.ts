@@ -1,3 +1,4 @@
+export { default as AboutTedTedxSection } from "./AboutTedTedxSection";
 export { default as AboutTedxAteneoSection } from "./AboutTedxAteneoSection";
 export { default as GetInvolvedSection } from "./GetInvolvedSection";
 export { default as LandingSection } from "./LandingSection";

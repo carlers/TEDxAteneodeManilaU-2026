@@ -1,0 +1,30 @@
+{
+  "currency": "PHP",
+  "participantLabels": {
+    "student": "Student",
+    "aman_scholar": "AMAn / Scholar",
+    "external": "External"
+  },
+  "individual": {
+    "student": {
+      "tierId": "individual_student",
+      "label": "Individual - Student",
+      "unitPrice": 1200
+    },
+    "aman_scholar": {
+      "tierId": "individual_aman_scholar",
+      "label": "Individual - AMAn / Scholar",
+      "unitPrice": 1000
+    },
+    "external": {
+      "tierId": "individual_external",
+      "label": "Individual - External",
+      "unitPrice": 1500
+    }
+  },
+  "groupOfThree": {
+    "tierId": "group_computed_by_types",
+    "label": "Group of 3 (computed by participant types)",
+    "discountRate": 0.1
+  }
+}

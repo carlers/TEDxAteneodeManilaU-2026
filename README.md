@@ -5,6 +5,46 @@ git clone [repo] && cd tedxadmu2026\
 npm install && npm run dev\
 Visit localhost:3000/
 
+## REGISTRATION STACK (CONVEX + CONVEX AUTH)
+
+- Registration is now powered by Convex functions in `convex/`.
+- Admin auth uses Convex Auth (Google OAuth), while Convex enforces final admin authorization (`admins` table or `ADMIN_EMAILS`).
+- Pricing is configured in `config/ticket-pricing.json` and resolved in `lib/ticketPricing.ts`.
+- Public GCash QR asset path is `public/gcash.png`.
+
+### Required environment variables
+
+- `NEXT_PUBLIC_CONVEX_URL`
+- `AUTH_GOOGLE_ID`
+- `AUTH_GOOGLE_SECRET`
+- `ADMIN_EMAILS` (comma-separated allowlisted admin emails)
+- `SITE_URL`
+- `JWT_PRIVATE_KEY`
+- `JWKS`
+
+### Setup steps
+
+1. Run `npm install`
+2. Copy `.env.example` to `.env.local` and set Convex Auth + Convex environment values
+3. Start Convex codegen/dev backend with `npx convex dev`
+4. In Convex dashboard environment variables, set `ADMIN_EMAILS` (comma-separated)
+5. Run `npm run sync:admins` to mirror `ADMIN_EMAILS` into the Convex `admins` table
+6. In your Google OAuth app:
+   - add authorized redirect URI: `/api/auth/callback/google` for local/prod domains
+   - place the client ID/secret in `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`
+7. Run app with `npm run dev`
+8. Edit sample ticket prices in `config/ticket-pricing.json`
+
+### New routes
+
+- `/register` - attendee registration + payment proof upload
+- `/admin/login` - admin sign-in
+- `/admin/registrations` - admin registrations panel
+
+### Deployment docs
+
+- Production runbook: `docs/deploy-production.md`
+
 ## STRUCTURE
 app/
   (home)/

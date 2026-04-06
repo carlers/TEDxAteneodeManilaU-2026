@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import AppProviders from "@/components/providers/AppProviders";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
 
 export const metadata: Metadata = {
@@ -88,9 +90,13 @@ export default function RootLayout({
       <body
         className="font-sans antialiased"
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <ConvexAuthNextjsServerProvider>
+          <AppProviders>
+            <Navbar />
+            {children}
+            <Footer />
+          </AppProviders>
+        </ConvexAuthNextjsServerProvider>
       </body>
     </html>
   );

@@ -40,6 +40,16 @@ Examples:
 - Team page sections: [`app/team/sections`](/Users/alexi/repos/TEDxAteneodeManilaU-2026/app/team/sections)
 - Shop page sections: [`app/shop/sections`](/Users/alexi/repos/TEDxAteneodeManilaU-2026/app/shop/sections)
 
+## Registration + Admin (Convex)
+
+- Convex functions live in [`convex`](/Users/alexi/repos/TEDxAteneodeManilaU-2026/convex).
+- Registration pricing lives in [`config/ticket-pricing.json`](/Users/alexi/repos/TEDxAteneodeManilaU-2026/config/ticket-pricing.json) and helpers in [`lib/ticketPricing.ts`](/Users/alexi/repos/TEDxAteneodeManilaU-2026/lib/ticketPricing.ts).
+- Public payment QR image should be kept at [`public/gcash.png`](/Users/alexi/repos/TEDxAteneodeManilaU-2026/public/gcash.png).
+- Admin pages:
+  - `/admin/login`
+  - `/admin/registrations`
+- Admin data access is protected by Convex Auth (Google OAuth) plus Convex-side admin checks (`admins` table and `ADMIN_EMAILS`).
+
 ## Section Conventions
 
 - Default to server components.

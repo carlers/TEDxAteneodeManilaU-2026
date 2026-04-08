@@ -119,8 +119,9 @@ export default function DepartmentsSection() {
             THE DEPARTMENTS
           </h2>
           <p className="mx-auto mt-5 max-w-[620px] text-[18px] leading-[1.25] text-tedx-muted-text">
-            Mauris non consequat ipsum. Vestibulum et neque id risus ultricies
-            fringilla. Donec ante nisi, lobortis quis ornare a.
+            Our committees shape every part of the TEDxAteneodeManilaU experience, from
+            logistics and audience engagement to program curation and partner
+            execution. Select a department to meet the team behind the work.
           </p>
         </div>
 

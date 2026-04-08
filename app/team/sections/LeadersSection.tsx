@@ -53,8 +53,9 @@ export default function LeadersSection() {
             THE LEADERS
           </h2>
           <p className="mx-auto mt-5 max-w-[620px] text-[18px] leading-[1.25] text-tedx-muted-text">
-            Mauris non consequat ipsum. Vestibulum et neque id risus ultricies
-            fringilla. Donec ante nisi, lobortis quis ornare a.
+            Meet the student leaders steering TEDxAteneodeManilaU 2026, each bringing
+            their expertise in strategy, collaboration, and execution to shape
+            a meaningful event experience.
           </p>
         </div>
 

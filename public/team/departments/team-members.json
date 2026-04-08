@@ -1,0 +1,76 @@
+{
+  "committees": [
+    {
+      "id": "logistics",
+      "label": "LOGISTICS",
+      "members": [
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Co-Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Logistics Head", "imageSrc": null }
+      ]
+    },
+    {
+      "id": "adcomm",
+      "label": "ADCOMM",
+      "members": [
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Co-Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "AdComm Head", "imageSrc": null }
+      ]
+    },
+    {
+      "id": "programs",
+      "label": "PROGRAMS",
+      "members": [
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Co-Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "Programs Head", "imageSrc": null }
+      ]
+    },
+    {
+      "id": "pexp",
+      "label": "PEXP",
+      "members": [
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Co-Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null },
+        { "name": "LOREM IPSUM", "role": "PExP Head", "imageSrc": null }
+      ]
+    }
+  ]
+}

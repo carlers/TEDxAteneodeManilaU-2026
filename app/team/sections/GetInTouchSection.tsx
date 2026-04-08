@@ -45,32 +45,32 @@ export default function GetInTouchSection() {
       <div className="relative mx-auto w-full max-w-[1440px]">
         <h2
           id="get-in-touch-heading"
-          className="text-center text-[3rem] font-bold tracking-[-0.03em] text-tedx-white sm:text-[4.2rem] lg:text-[78px]"
+          className="text-center text-[2.2rem] font-bold tracking-[-0.03em] text-tedx-white sm:text-[3rem] lg:text-[78px]"
         >
           Get in Touch
         </h2>
 
-        <div className="mx-auto mt-14 grid w-full max-w-[1080px] grid-cols-1 gap-14 text-center md:grid-cols-2 md:gap-16 lg:mt-[84px]">
+        <div className="mx-auto mt-12 grid w-full max-w-[1080px] grid-cols-1 gap-12 text-center md:mt-14 md:grid-cols-2 md:gap-16 lg:mt-[84px]">
           <div className="flex flex-col items-center text-center">
-            <h3 className="text-[2.9rem] font-bold leading-none tracking-[-0.03em] text-tedx-white lg:text-[36px]">
+            <h3 className="text-[1.9rem] font-bold leading-none tracking-[-0.03em] text-tedx-white sm:text-[2.25rem] lg:text-[36px]">
               <span className="text-tedx-red">Contact</span> Us
             </h3>
-            <p className="mt-8 text-[2rem] leading-none text-tedx-white/90 lg:text-[20px]">
+            <p className="mt-6 text-[1rem] leading-none text-tedx-white/90 sm:mt-8 sm:text-[1.25rem] lg:text-[20px]">
               Email us at:
             </p>
             <Link
               href={`mailto:${contactEmail}`}
-              className="mt-6 text-[2rem] leading-[1.1] text-tedx-white transition-colors duration-200 hover:text-tedx-muted-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-white focus-visible:ring-offset-2 focus-visible:ring-offset-tedx-black lg:text-[23px]"
+              className="mt-5 break-all text-[1.05rem] leading-[1.25] text-tedx-white transition-colors duration-200 hover:text-tedx-muted-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-white focus-visible:ring-offset-2 focus-visible:ring-offset-tedx-black sm:mt-6 sm:text-[1.35rem] sm:leading-[1.15] lg:text-[23px]"
             >
               {contactEmail}
             </Link>
           </div>
 
           <div className="flex flex-col items-center text-center">
-            <h3 className="text-[2.9rem] font-bold leading-none tracking-[-0.03em] text-tedx-white lg:text-[36px]">
+            <h3 className="text-[1.9rem] font-bold leading-none tracking-[-0.03em] text-tedx-white sm:text-[2.25rem] lg:text-[36px]">
               <span className="text-tedx-red">Connect</span> with Us
             </h3>
-            <p className="mt-8 text-[2rem] leading-none text-tedx-white/90 lg:text-[20px]">
+            <p className="mt-6 text-[1rem] leading-none text-tedx-white/90 sm:mt-8 sm:text-[1.25rem] lg:text-[20px]">
               Follow us on our socials:
             </p>
 

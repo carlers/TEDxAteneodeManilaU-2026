@@ -42,8 +42,9 @@ export default function OrganizerSection() {
             THE ORGANIZER
           </h2>
           <p className="mx-auto mt-5 max-w-[570px] text-[18px] leading-[1.25] text-tedx-muted-text">
-            Mauris non consequat ipsum. Vestibulum et neque id risus ultricies
-            fringilla. Donec ante nisi, lobortis quis ornare a.
+            Meet the organizer guiding TEDxAteneodeManilaU 2026 with a focus on
+            innovation, purpose-driven leadership, and ideas that inspire
+            meaningful action across communities.
           </p>
         </div>
 

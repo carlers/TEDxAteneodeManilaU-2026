@@ -3,7 +3,7 @@ import { v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import type { GenericDataModel, GenericMutationCtx, GenericQueryCtx } from "convex/server";
 
-const participantTypeValues = new Set(["student", "aman_scholar", "external"]);
+const participantTypeValues = new Set(["atenean", "scholar", "non_atenean"]);
 const hearAboutValues = new Set([
   "facebook",
   "instagram",
@@ -15,9 +15,9 @@ const hearAboutValues = new Set([
 ]);
 
 const resolvedTierIds = new Set([
-  "individual_student",
-  "individual_aman_scholar",
-  "individual_external",
+  "individual_atenean",
+  "individual_scholar",
+  "individual_non_atenean",
   "group_computed_by_types",
 ]);
 
@@ -27,9 +27,9 @@ const attendeeValidator = v.object({
   contactNumber: v.string(),
   schoolAffiliation: v.string(),
   participantType: v.union(
-    v.literal("student"),
-    v.literal("aman_scholar"),
-    v.literal("external"),
+    v.literal("atenean"),
+    v.literal("scholar"),
+    v.literal("non_atenean"),
   ),
 });
 
@@ -94,7 +94,7 @@ type SubmitArgs = {
     email: string;
     contactNumber: string;
     schoolAffiliation: string;
-    participantType: "student" | "aman_scholar" | "external";
+    participantType: "atenean" | "scholar" | "non_atenean";
   }>;
   encourageFacebookFollow: boolean;
   dataPrivacyConsent: boolean;
@@ -253,6 +253,24 @@ export const getRegistration = queryGeneric({
       ...registration,
       paymentProofUrl,
     };
+  },
+});
+
+export const listAllRegistrations = queryGeneric({
+  args: {},
+  handler: async (ctx) => {
+    await assertAdmin(ctx);
+    const registrations = await ctx.db
+      .query("registrations")
+      .withIndex("by_createdAt")
+      .order("desc")
+      .collect();
+    return await Promise.all(
+      registrations.map(async (reg) => ({
+        ...reg,
+        paymentProofUrl: await ctx.storage.getUrl(reg.paymentProofStorageId),
+      })),
+    );
   },
 });
 

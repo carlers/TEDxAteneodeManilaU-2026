@@ -1,6 +1,6 @@
 import pricingJson from "@/config/ticket-pricing.json";
 
-export type ParticipantType = "student" | "aman_scholar" | "external";
+export type ParticipantType = "atenean" | "scholar" | "non_atenean";
 export type PurchaseMode = "individual" | "group_of_three";
 
 type TierPricing = {
@@ -16,7 +16,7 @@ type PricingConfig = {
   groupOfThree: {
     tierId: string;
     label: string;
-    discountRate: number;
+    discountAmount: number;
   };
 };
 
@@ -43,15 +43,14 @@ export function resolveGroupLine(participantTypes: ParticipantType[]) {
     return sum + pricing.individual[participantType].unitPrice;
   }, 0);
 
-  const discountMultiplier = 1 - pricing.groupOfThree.discountRate;
-  const computedTotal = Math.round(baseTotal * discountMultiplier);
+  const computedTotal = baseTotal - pricing.groupOfThree.discountAmount;
 
   return {
     tierId: pricing.groupOfThree.tierId,
     label: pricing.groupOfThree.label,
     unitPrice: computedTotal,
     baseTotal,
-    discountRate: pricing.groupOfThree.discountRate,
+    discountAmount: pricing.groupOfThree.discountAmount,
   };
 }
 

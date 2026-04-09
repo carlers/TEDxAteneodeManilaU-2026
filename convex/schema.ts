@@ -15,9 +15,9 @@ export default defineSchema({
         contactNumber: v.string(),
         schoolAffiliation: v.string(),
         participantType: v.union(
-          v.literal("student"),
-          v.literal("aman_scholar"),
-          v.literal("external"),
+          v.literal("atenean"),
+          v.literal("scholar"),
+          v.literal("non_atenean"),
         ),
       }),
     ),

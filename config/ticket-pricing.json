@@ -1,30 +1,30 @@
 {
   "currency": "PHP",
   "participantLabels": {
-    "student": "Student",
-    "aman_scholar": "AMAn / Scholar",
-    "external": "External"
+    "atenean": "AMAn / Atenean / TEDx",
+    "scholar": "Scholar",
+    "non_atenean": "Non-Atenean"
   },
   "individual": {
-    "student": {
-      "tierId": "individual_student",
-      "label": "Individual - Student",
-      "unitPrice": 1200
+    "atenean": {
+      "tierId": "individual_atenean",
+      "label": "Individual — AMAn / Atenean / TEDx",
+      "unitPrice": 280
     },
-    "aman_scholar": {
-      "tierId": "individual_aman_scholar",
-      "label": "Individual - AMAn / Scholar",
-      "unitPrice": 1000
+    "scholar": {
+      "tierId": "individual_scholar",
+      "label": "Individual — Scholar",
+      "unitPrice": 250
     },
-    "external": {
-      "tierId": "individual_external",
-      "label": "Individual - External",
-      "unitPrice": 1500
+    "non_atenean": {
+      "tierId": "individual_non_atenean",
+      "label": "Individual — Non-Atenean",
+      "unitPrice": 300
     }
   },
   "groupOfThree": {
     "tierId": "group_computed_by_types",
-    "label": "Group of 3 (computed by participant types)",
-    "discountRate": 0.1
+    "label": "Group of 3",
+    "discountAmount": 30
   }
 }

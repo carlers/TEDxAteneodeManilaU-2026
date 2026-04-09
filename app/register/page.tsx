@@ -31,7 +31,7 @@ type ComputedLine = {
   unitPrice: number;
   lineTotal: number;
   baseTotal?: number;
-  discountRate?: number;
+  discountAmount?: number;
   participantBreakdown?: Array<{
     participantType: ParticipantType;
     unitPrice: number;
@@ -43,6 +43,7 @@ type SuccessReceipt = {
   totalAmount: number;
   primaryName: string;
   primaryEmail: string;
+  attendeeNames: string[];
 };
 type FieldErrors = Record<string, string>;
 
@@ -58,9 +59,9 @@ const hearAboutOptions = [
 type HearAboutOption = (typeof hearAboutOptions)[number]["id"];
 
 const participantTypeOptions = [
-  { id: "student", label: "Student" },
-  { id: "aman_scholar", label: "AMAn / Scholar" },
-  { id: "external", label: "External" },
+  { id: "atenean", label: "AMAn / Atenean / TEDx" },
+  { id: "scholar", label: "Scholar" },
+  { id: "non_atenean", label: "Non-Atenean" },
 ] as const;
 
 const initialAttendee: Attendee = {
@@ -68,7 +69,7 @@ const initialAttendee: Attendee = {
   email: "",
   contactNumber: "",
   schoolAffiliation: "",
-  participantType: "student",
+  participantType: "atenean",
 };
 
 const steps = [
@@ -159,6 +160,8 @@ export default function RegisterPage() {
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [proofUploadError, setProofUploadError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitPhase, setSubmitPhase] = useState<"uploading" | "submitting">("uploading");
+  const [copied, setCopied] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
   const [stepError, setStepError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -211,11 +214,11 @@ export default function RegisterPage() {
         purchaseMode,
         attendeeIndices: [0, 1, 2],
         tierId: tier.tierId,
-        label: `${tier.label} (${Math.round(tier.discountRate * 100)}% off)`,
+        label: `${tier.label} (₱${tier.discountAmount} off)`,
         unitPrice: tier.unitPrice,
         lineTotal: tier.unitPrice,
         baseTotal: tier.baseTotal,
-        discountRate: tier.discountRate,
+        discountAmount: tier.discountAmount,
         participantBreakdown,
       },
     ];
@@ -448,17 +451,29 @@ export default function RegisterPage() {
     event.preventDefault();
     setSubmitMessage("");
 
+    // Validate attendee fields
     const attendeeStep = purchaseMode === "group_of_three" ? 3 : 1;
-    const error = validateStep(attendeeStep);
-    if (error) {
-      setSubmitMessage(error);
+    const attendeeError = validateStep(attendeeStep);
+    if (attendeeError) {
+      setSubmitMessage(attendeeError);
       setCurrentStep(attendeeStep);
+      return;
+    }
+
+    // Validate payment step (consent + proof) — this is what the server enforces too
+    const paymentErrors = validateForm(4);
+    if (Object.keys(paymentErrors).length > 0) {
+      setFieldErrors((prev) => ({ ...prev, ...paymentErrors }));
+      setCurrentStep(4);
+      setSubmitMessage("Please correct the highlighted fields.");
       return;
     }
 
     try {
       setIsSubmitting(true);
+      setSubmitPhase("uploading");
       const paymentProofStorageId = await uploadPaymentProof();
+      setSubmitPhase("submitting");
       const result = await submitRegistration({
         attendees,
         encourageFacebookFollow,
@@ -478,6 +493,7 @@ export default function RegisterPage() {
         totalAmount,
         primaryName: attendees[0]?.fullName ?? "Primary attendee",
         primaryEmail: attendees[0]?.email ?? "",
+        attendeeNames: attendees.map((a) => a.fullName),
       });
       setSubmitMessage("");
       localStorage.removeItem(draftStorageKey);
@@ -494,62 +510,105 @@ export default function RegisterPage() {
     }
   };
 
+  const copyReferenceCode = () => {
+    if (!successReceipt) return;
+    void navigator.clipboard.writeText(successReceipt.referenceCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   if (successReceipt) {
     return (
       <section className="bg-tedx-black px-4 py-8 text-tedx-white sm:px-6 sm:py-12 lg:px-8">
-        <div className="mx-auto w-full max-w-4xl">
+        <div className="mx-auto w-full max-w-2xl">
           <div className="relative overflow-hidden rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-6 sm:p-10">
-            {/* Decorative red glow */}
-            <div
-              className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-tedx-accent opacity-10 blur-3xl"
-              aria-hidden="true"
-            />
-            <div className="relative">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tedx-accent">
-                  <svg viewBox="0 0 20 20" fill="none" className="h-5 w-5" aria-hidden="true">
-                    <path d="M4 10l4 4 8-8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            {/* Decorative glows */}
+            <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-tedx-accent opacity-10 blur-3xl" aria-hidden="true" />
+            <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-tedx-accent opacity-5 blur-3xl" aria-hidden="true" />
+
+            <div className="relative space-y-6">
+              {/* Header */}
+              <div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-tedx-accent">
+                  <svg viewBox="0 0 20 20" fill="none" className="h-6 w-6" aria-hidden="true">
+                    <path d="M4 10l4 4 8-8" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <h1 className="font-league-gothic text-5xl uppercase tracking-wide text-balance sm:text-6xl">
+                <h1 className="mt-4 font-league-gothic text-5xl uppercase tracking-wide sm:text-6xl">
                   Registration Received
                 </h1>
+                <p className="mt-2 text-sm leading-relaxed text-tedx-muted-text">
+                  Thank you, <strong className="text-tedx-white">{successReceipt.primaryName}</strong>.
+                  Your payment is under review — we'll confirm once verified.
+                </p>
               </div>
-              <p className="mt-3 max-w-lg text-sm leading-relaxed text-tedx-muted-text sm:text-base">
-                Thank you, <strong className="text-tedx-white">{successReceipt.primaryName}</strong>.
-                Your submission is now in our queue for review. Save your reference code.
-              </p>
 
-              {/* Reference code — hero treatment */}
-              <div className="mt-8 rounded-xl border-2 border-tedx-accent bg-tedx-surface-deep p-6">
-                <p className="text-xs font-bold uppercase tracking-wider text-tedx-muted-text">
-                  Your Reference Code
+              {/* Reference code */}
+              <div className="rounded-xl border-2 border-tedx-accent bg-tedx-surface-deep p-5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-tedx-muted-text">
+                  Reference Code
                 </p>
-                <p className="mt-2 font-league-gothic text-4xl uppercase tracking-widest text-tedx-accent sm:text-5xl">
-                  {successReceipt.referenceCode}
-                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-3">
+                  <p className="font-league-gothic text-4xl uppercase tracking-widest text-tedx-accent sm:text-5xl">
+                    {successReceipt.referenceCode}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={copyReferenceCode}
+                    className="rounded-md border border-tedx-outline-strong px-3 py-1.5 text-xs font-bold uppercase transition-colors hover:border-tedx-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent"
+                  >
+                    {copied ? "Copied!" : "Copy"}
+                  </button>
+                </div>
                 <p className="mt-2 text-xs text-tedx-muted-text">
-                  Screenshot or copy this code — you will need it if you contact support.
+                  Save this — you'll need it at the gate and for any support queries.
                 </p>
               </div>
 
-              {/* Amount row */}
-              <div className="mt-4 flex items-center justify-between rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-4">
-                <p className="text-xs font-bold uppercase text-tedx-muted-text">Amount Submitted</p>
-                <p className="font-league-gothic text-2xl uppercase text-tedx-white">
-                  {formatPhp(successReceipt.totalAmount)}
-                </p>
+              {/* Summary row */}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-xl border border-tedx-outline-strong bg-tedx-black p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-tedx-muted-text">Amount</p>
+                  <p className="mt-1 font-league-gothic text-2xl uppercase text-tedx-accent">
+                    {formatPhp(successReceipt.totalAmount)}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-tedx-outline-strong bg-tedx-black p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-tedx-muted-text">
+                    {successReceipt.attendeeNames.length === 1 ? "Attendee" : "Attendees"}
+                  </p>
+                  <ul className="mt-1 space-y-0.5">
+                    {successReceipt.attendeeNames.map((name, i) => (
+                      <li key={i} className="truncate text-sm font-semibold">{name}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
-              {/* Contact info */}
-              <div className="mt-4 rounded-xl border border-tedx-outline-strong bg-tedx-black p-5 text-sm">
-                <p className="text-tedx-muted-text">
-                  A confirmation message will be sent to{" "}
-                  <strong className="text-tedx-white">{successReceipt.primaryEmail}</strong>
+              {/* What happens next */}
+              <div className="rounded-xl border border-tedx-outline-strong bg-tedx-black p-5">
+                <p className="text-xs font-bold uppercase tracking-wider text-tedx-muted-text">
+                  What happens next
                 </p>
-                <div className="mt-3 border-t border-tedx-outline-strong pt-3 text-tedx-muted-text">
-                  <p>Need help? Reach the team with your reference code:</p>
-                  <p className="mt-1 font-bold text-tedx-white">tedxateneodemanilau@gmail.com</p>
+                <ol className="mt-3 space-y-3">
+                  {[
+                    "Our team will review your payment proof — this usually takes 1–2 business days.",
+                    `Once verified, a confirmation will be sent to ${successReceipt.primaryEmail}.`,
+                    "Show your reference code at the gate on event day for check-in.",
+                  ].map((step, i) => (
+                    <li key={i} className="flex gap-3 text-sm text-tedx-muted-text">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-tedx-accent text-[10px] font-bold text-white">
+                        {i + 1}
+                      </span>
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+                <div className="mt-4 border-t border-tedx-outline-strong pt-4 text-xs text-tedx-muted-text">
+                  Questions? Email us at{" "}
+                  <span className="font-bold text-tedx-white">tedxateneodemanilau@gmail.com</span>{" "}
+                  with your reference code.
                 </div>
               </div>
 
@@ -566,9 +625,9 @@ export default function RegisterPage() {
                   setLastSavedAt(null);
                   localStorage.removeItem(draftStorageKey);
                 }}
-                className="mt-6 rounded-md border border-tedx-outline-strong px-4 py-2 text-xs font-bold uppercase transition-colors hover:border-tedx-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tedx-accent"
+                className="text-xs font-bold uppercase text-tedx-muted-text underline-offset-2 hover:text-tedx-white hover:underline"
               >
-                Submit Another Registration
+                Submit another registration
               </button>
             </div>
           </div>
@@ -578,7 +637,24 @@ export default function RegisterPage() {
   }
 
   return (
-      <section className="bg-tedx-black px-4 py-8 text-tedx-white sm:px-6 sm:py-12 lg:px-8">
+      <section className="relative bg-tedx-black px-4 py-8 text-tedx-white sm:px-6 sm:py-12 lg:px-8">
+      {/* Full-screen loading overlay during upload + submit */}
+      {isSubmitting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-tedx-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-8 text-center">
+            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-tedx-outline-strong border-t-tedx-accent" />
+            <p className="mt-5 font-league-gothic text-2xl uppercase tracking-wide">
+              {submitPhase === "uploading" ? "Uploading proof…" : "Submitting…"}
+            </p>
+            <p className="mt-1 text-xs text-tedx-muted-text">
+              {submitPhase === "uploading"
+                ? "Sending your payment screenshot"
+                : "Saving your registration"}
+            </p>
+            <p className="mt-4 text-[11px] text-tedx-muted-text">Please don't close this page</p>
+          </div>
+        </div>
+      )}
       <div className="mx-auto w-full max-w-5xl rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-4 sm:p-8">
         <header className="space-y-3">
           <h1 className="font-league-gothic text-5xl uppercase tracking-wide text-balance sm:text-6xl">
@@ -788,7 +864,7 @@ export default function RegisterPage() {
                   <p className="font-league-gothic text-2xl uppercase tracking-wide">Individual</p>
                   <p className="mt-0.5 text-xs uppercase text-tedx-muted-text">1 Person · Solo Registration</p>
                   <div className="mt-4 space-y-1.5 border-t border-tedx-outline-strong pt-3">
-                    {(["student", "aman_scholar", "external"] as const).map((type) => (
+                    {(["atenean", "scholar", "non_atenean"] as const).map((type) => (
                       <div key={type} className="flex justify-between text-xs">
                         <span className="text-tedx-muted-text">{pricing.participantLabels[type]}</span>
                         <span className="font-bold text-tedx-white">{formatPhp(pricing.individual[type].unitPrice)}</span>
@@ -820,7 +896,7 @@ export default function RegisterPage() {
                   <p className="mt-0.5 text-xs uppercase text-tedx-muted-text">3 People · You + 2 Companions</p>
                   <div className="mt-4 rounded-md bg-tedx-accent/10 px-3 py-2.5 text-center">
                     <p className="text-xs font-bold uppercase text-tedx-accent">
-                      {Math.round(pricing.groupOfThree.discountRate * 100)}% Discount Applied
+                      ₱{pricing.groupOfThree.discountAmount} Group Discount
                     </p>
                     <p className="mt-0.5 text-xs text-tedx-muted-text">Computed from individual rates</p>
                   </div>
@@ -1008,7 +1084,7 @@ export default function RegisterPage() {
                             <span>{formatPhp(line.baseTotal ?? 0)}</span>
                           </div>
                           <div className="flex justify-between text-tedx-accent">
-                            <span>Discount ({Math.round((line.discountRate ?? 0) * 100)}%)</span>
+                            <span>Group discount (₱{line.discountAmount ?? 0} off)</span>
                             <span>-{formatPhp((line.baseTotal ?? 0) - line.lineTotal)}</span>
                           </div>
                         </div>
@@ -1066,7 +1142,7 @@ export default function RegisterPage() {
                   </div>
                   <div className="flex items-center justify-between border-t-2 border-tedx-accent bg-tedx-surface-deep px-4 py-3">
                     <p className="text-sm font-bold uppercase text-tedx-white">
-                      Total{purchaseMode === "group_of_three" ? ` (${Math.round(pricing.groupOfThree.discountRate * 100)}% group discount)` : ""}
+                      Total{purchaseMode === "group_of_three" ? ` (₱${pricing.groupOfThree.discountAmount} group discount)` : ""}
                     </p>
                     <p className="font-league-gothic text-2xl uppercase tracking-wide text-tedx-accent">
                       {formatPhp(totalAmount)}

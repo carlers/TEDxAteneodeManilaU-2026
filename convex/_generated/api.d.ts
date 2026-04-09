@@ -12,6 +12,7 @@ import type * as admins from "../admins.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as registrations from "../registrations.js";
+import type * as syncSheets from "../syncSheets.js";
 
 import type {
   ApiFromModules,
@@ -24,6 +25,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   registrations: typeof registrations;
+  syncSheets: typeof syncSheets;
 }>;
 
 /**

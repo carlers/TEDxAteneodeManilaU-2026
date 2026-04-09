@@ -1,0 +1,19 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 44.8203 44.8203" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="triangle">
+<path d="M44.8203 44.8203H0V0L44.8203 44.8203Z" fill="url(#paint0_linear_0_47)"/>
+<path d="M44.8203 44.8203H0V0L44.8203 44.8203Z" fill="url(#pattern0_0_47)" fill-opacity="0.06"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_47" x1="22.4102" y1="0" x2="22.4102" y2="44.8203" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EB0028"/>
+<stop offset="1" stop-color="#570000"/>
+</linearGradient>
+<pattern id="pattern0_0_47" patternUnits="userSpaceOnUse" patternTransform="matrix(13.64 0 0 8.5932 1.53809 2.59021)" preserveAspectRatio="none" viewBox="13.9827 23.5474 124 78.12" width="1" height="1">
+<use xlink:href="#pattern0_0_47_inner" transform="translate(0 -78.12)"/>
+<use xlink:href="#pattern0_0_47_inner" transform="translate(62 -39.06)"/>
+<g id="pattern0_0_47_inner">
+<path id="Star 1" d="M22.3758 25.9194C22.696 22.7568 27.304 22.7568 27.6242 25.9194C27.7446 27.1086 28.6497 28.0682 29.8299 28.2579L33.7984 28.8958C36.7571 29.3714 36.7571 33.6286 33.7984 34.1042L29.8299 34.7421C28.6497 34.9318 27.7446 35.8914 27.6242 37.0806C27.304 40.2432 22.696 40.2432 22.3758 37.0806C22.2554 35.8914 21.3503 34.9318 20.1701 34.7421L16.2016 34.1042C13.2429 33.6286 13.2429 29.3714 16.2016 28.8958L20.1701 28.2579C21.3503 28.0682 22.2554 27.1086 22.3758 25.9194Z" fill="var(--fill-0, #350101)"/>
+</g>
+<use xlink:href="#pattern0_0_47_inner" transform="translate(62 39.06)"/>
+</pattern></defs>
+</svg>

@@ -21,7 +21,11 @@
       "Bash(curl -sL -o chat-bubble-dots.png \"https://www.figma.com/api/mcp/asset/3f98fdbf-8655-4743-9e9a-7d869f80685f\")",
       "Bash(curl -sL -o bottom-fade.png \"https://www.figma.com/api/mcp/asset/a4c061df-1a33-4071-b4e4-ebbb97805067\")",
       "Bash(curl -sL -o arrow.png \"https://www.figma.com/api/mcp/asset/7cd58235-ebb9-42fe-a947-626e3c7fe558\")",
-      "Bash(file /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/about/tedx/*)"
+      "Bash(file /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/about/tedx/*)",
+      "Bash(curl -sL -o location-icon.png \"https://www.figma.com/api/mcp/asset/ea5e29f2-b8cc-4445-a987-3b18db6714d2\")",
+      "Bash(curl -sL -o pin.png \"https://www.figma.com/api/mcp/asset/0e1914ff-bae9-480e-b8db-945cdc2d8035\")",
+      "Bash(curl -sL -o triangle.png \"https://www.figma.com/api/mcp/asset/1101f7d7-7316-4218-9a51-d75cd56a5db8\")",
+      "Bash(file /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/venue/*)"
     ]
   }
 }

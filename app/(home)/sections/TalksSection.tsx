@@ -10,10 +10,14 @@
   const imgTalk3Over = "/talks/talk3-over.svg";
   const imgTalk4Band = "/talks/talk4-band.svg";
   const imgTalk4Over = "/talks/talk4-over.svg";
-  const imgQuizBg    = "/talks/quiz-bg.svg";
-  const imgQuizBot   = "/talks/quiz-bot.svg";
-  const imgQuizTop   = "/talks/quiz-top.svg";
-  const imgQuizArrow = "/talks/quiz-arrow.svg";
+  const imgQuizBg      = "/talks/quiz-bg.svg";
+  const imgQuizBgGray  = "/talks/quiz-bg-gray.svg";
+  const imgQuizBot     = "/talks/quiz-bot.svg";
+  const imgQuizBotHov  = "/talks/quiz-bot-hover.svg";
+  const imgQuizTop     = "/talks/quiz-top.svg";
+  const imgQuizArrow   = "/talks/quiz-arrow.svg";
+  const imgQuizArrowH  = "/talks/quiz-arrow-hover.svg";
+  const imgQuizArrowV3 = "/talks/quiz-arrow-v3.svg";
   const imgCrowd     = "/talks/crowd.png";
 
   const v = (px: number) => `${((px / 1444) * 100).toFixed(3)}vw`;
@@ -219,31 +223,69 @@
           </button>
 
           {/* ── Center quiz button ────────────────────────── */}
-          <button className="absolute z-10 cursor-pointer hover:brightness-95 transition-[filter] talks-enter-quiz"
+          <button className="absolute z-10 cursor-pointer talks-enter-quiz group/quiz"
                   style={{ left: "30.26%", top: "37.07%", width: "39.2%", height: "27.52%" }}>
-            <div className="absolute" style={{ top: "49.93%", left: 0, right: 0, bottom: 0 }}>
-              <img src={imgQuizBot} alt="" className="absolute inset-0 w-full h-full" />
+
+            {/* Bottom shadow — extends on hover (49.93% → 41.37%) */}
+            <div className="absolute transition-all duration-300 ease-out left-0 right-0 bottom-0
+                            top-[49.93%] group-hover/quiz:top-[41.37%]">
+              <img src={imgQuizBot} alt="" className="absolute inset-0 w-full h-full
+                          transition-opacity duration-300 opacity-100 group-active/quiz:opacity-0" />
+              <img src={imgQuizBotHov} alt="" className="absolute inset-0 w-full h-full
+                          transition-opacity duration-300 opacity-0 group-hover/quiz:opacity-100" />
             </div>
-            <img src={imgQuizBg} alt="" className="absolute inset-0 w-full h-full" />
-            <div className="absolute" style={{ top: "49.26%", left: 0, right: 0, bottom: 0 }}>
+
+            {/* Main background — white default, gray on active; shifts up on hover */}
+            <div className="absolute inset-0 transition-transform duration-300 ease-out
+                            group-hover/quiz:-translate-y-[8.57%]">
+              <img src={imgQuizBg} alt="" className="absolute inset-0 w-full h-full
+                          transition-opacity duration-300 opacity-100 group-active/quiz:opacity-0" />
+              <img src={imgQuizBgGray} alt="" className="absolute inset-0 w-full h-full
+                          transition-opacity duration-300 opacity-0 group-active/quiz:opacity-100" />
+            </div>
+
+            {/* Top overlay — shifts up on hover (-8.57% top) */}
+            <div className="absolute transition-all duration-300 ease-out left-0 right-0
+                            top-[49.26%] bottom-0
+                            group-hover/quiz:top-[-8.57%] group-hover/quiz:bottom-[8.57%]">
               <img src={imgQuizTop} alt="" className="absolute inset-0 w-full h-full" />
             </div>
-            <div className="absolute flex items-center justify-center"
+
+            {/* "?" — fades out on hover */}
+            <div className="absolute flex items-center justify-center
+                            transition-opacity duration-300 opacity-100 group-hover/quiz:opacity-0"
                 style={{ top: "24%", right: "47.8%", bottom: "46.79%", left: "19.19%" }}>
               <div style={{ flexShrink: 0, width: v(138), height: v(78), transform: "rotate(-31deg) skewX(30deg) scaleY(0.87)" }}>
                 <p className="font-display text-center leading-none"
                   style={{ fontSize: v(300), color: "rgba(176,176,176,0.25)" }}>?</p>
               </div>
             </div>
-            <div className="absolute flex items-center justify-center"
-                style={{ top: "20.07%", right: "20.67%", bottom: "22.8%", left: "15.02%" }}>
+
+            {/* "find which talk is for you" — moves up on hover, turns white on active */}
+            <div className="absolute flex items-center justify-center transition-all duration-300 ease-out
+                            top-[20.07%] right-[20.67%] bottom-[22.8%] left-[15.02%]
+                            group-hover/quiz:top-[11.2%] group-hover/quiz:bottom-[31.68%]">
               <div style={{ flexShrink: 0, width: v(290), height: v(132), transform: "rotate(-31deg) skewX(30deg) scaleY(0.87)" }}>
-                <p className="font-display text-black text-center whitespace-pre leading-tight"
+                <p className="font-display text-center whitespace-pre leading-tight
+                              transition-colors duration-300
+                              text-black group-active/quiz:text-white"
                   style={{ fontSize: v(80) }}>{`find which \ntalk is for you`}</p>
               </div>
             </div>
-            <div className="absolute" style={{ top: "81.53%", right: "54.06%", bottom: "17.27%", left: "44.88%" }}>
-              <img src={imgQuizArrow} alt="" className="w-full h-full object-contain" />
+
+            {/* Arrow — grows on hover, swaps to white on active */}
+            <div className="absolute transition-all duration-300 ease-out
+                            top-[81.53%] right-[54.06%] bottom-[17.27%] left-[44.88%]
+                            group-hover/quiz:top-[34.81%] group-hover/quiz:right-[15.55%] group-hover/quiz:bottom-[24.1%] group-hover/quiz:left-[44.96%]">
+              {/* Default arrow */}
+              <img src={imgQuizArrow} alt="" className="w-full h-full object-contain
+                          transition-opacity duration-300 opacity-100 group-hover/quiz:opacity-0" />
+              {/* Hover arrow (black, larger) */}
+              <img src={imgQuizArrowH} alt="" className="absolute inset-0 w-full h-full object-contain
+                          transition-opacity duration-300 opacity-0 group-hover/quiz:opacity-100 group-active/quiz:opacity-0" />
+              {/* Active arrow (white) */}
+              <img src={imgQuizArrowV3} alt="" className="absolute inset-0 w-full h-full object-contain
+                          transition-opacity duration-300 opacity-0 group-active/quiz:opacity-100" />
             </div>
           </button>
 

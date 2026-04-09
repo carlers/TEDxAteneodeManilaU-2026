@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sL -o trapezoid.svg \"https://www.figma.com/api/mcp/asset/72e54723-868f-464d-a31e-f53f2adc1412\")",
+      "Bash(curl -sL -o subtitle-bg.png \"https://www.figma.com/api/mcp/asset/816ff644-d337-4363-8340-3464765da5e3\")",
+      "Bash(curl -sL -o arrow.svg \"https://www.figma.com/api/mcp/asset/f36759cb-9fc6-47c4-9d03-f8f8245e65b7\")",
+      "Bash(curl -sL -o calendar.svg \"https://www.figma.com/api/mcp/asset/c51028d1-c3f3-4473-9558-47ab0086896a\")",
+      "Bash(curl -sL -o time.svg \"https://www.figma.com/api/mcp/asset/b54ed602-79dd-45d2-8168-7ab4343d8b3c\")",
+      "Bash(mkdir -p /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/momentum)",
+      "Bash(curl -sL -o bg-left.png \"https://www.figma.com/api/mcp/asset/32df8cf5-04b6-4171-b91f-5b480a8dcec5\")",
+      "Bash(curl -sL -o bg-right.png \"https://www.figma.com/api/mcp/asset/42eb2b1c-8f9b-4e3b-8914-1cfce1ccf9f6\")",
+      "Bash(curl -sL -o edge-fade.png \"https://www.figma.com/api/mcp/asset/0caf815c-6a98-4180-bb97-f03cf49c4ba7\")",
+      "Bash(curl -sL -o watch-trailer.png \"https://www.figma.com/api/mcp/asset/8115b4be-e3b3-4fea-b869-d234f3325b66\")",
+      "Bash(curl -sL -o bg-left.png \"https://www.figma.com/api/mcp/asset/7b51e523-6106-4b92-a074-09bdd41d64fa\")",
+      "Bash(curl -sL -o bg-right.png \"https://www.figma.com/api/mcp/asset/c8507494-110c-4817-8575-86c42086a868\")",
+      "Bash(file /Users/jjpardo/Documents/TEDxAteneodeManilaU-2026/public/momentum/*.png)"
+    ]
+  }
+}

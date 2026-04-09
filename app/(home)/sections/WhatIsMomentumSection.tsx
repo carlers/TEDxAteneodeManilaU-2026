@@ -1,26 +1,30 @@
-const img28 = "https://www.figma.com/api/mcp/asset/03f1b4f3-0971-4ddb-b4e3-660adbcd29b8";
-const img32 = "https://www.figma.com/api/mcp/asset/d4a10363-a9ee-4120-9f3b-9645af9b4489";
-const imgEmbedMedia = "https://www.figma.com/api/mcp/asset/3db0459f-fec9-484a-a2dc-bb06323b015c";
-
 export default function WhatIsMomentumSection() {
   return (
     <section id="what-is-momentum" className="relative w-full bg-black overflow-hidden">
       {/* Left atmospheric background */}
       <div className="absolute inset-y-0 left-[-19%] w-[45%] opacity-70 pointer-events-none">
-        <img src={img32} alt="" className="w-full h-full object-cover object-right" />
+        <img
+          src="/momentum/bg-left.png"
+          alt=""
+          className="w-full h-full object-cover object-right"
+        />
       </div>
 
       {/* Right atmospheric background */}
       <div className="absolute top-[-5%] right-[-10%] w-[42%] h-[110%] opacity-70 pointer-events-none">
-        <img src={img28} alt="" className="w-full h-full object-cover object-right" />
+        <img
+          src="/momentum/bg-right.png"
+          alt=""
+          className="w-full h-full object-cover object-right"
+        />
         <div className="absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-black to-transparent" />
       </div>
 
       {/* Top fade */}
-      <div className="absolute top-0 inset-x-0 h-[120px] pointer-events-none bg-gradient-to-b from-black to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-[120px] pointer-events-none z-10 bg-gradient-to-b from-black to-transparent" />
 
       {/* Bottom fade */}
-      <div className="absolute bottom-0 inset-x-0 h-[120px] pointer-events-none bg-gradient-to-t from-black to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-[120px] pointer-events-none z-10 bg-gradient-to-t from-black to-transparent" />
 
       {/* Main content */}
       <div className="relative z-10 py-24 md:py-32 px-6">
@@ -34,25 +38,25 @@ export default function WhatIsMomentumSection() {
           </h2>
 
           {/* Body copy */}
-          <div className="font-sans text-base text-white space-y-6" style={{ lineHeight: "1.5625" }}>
+          <div className="font-sans text-base text-white space-y-6 leading-[25px]">
             <p>
-              <strong className="text-tedx-red">Momentum is</strong>{" "}
+              <strong className="text-tedx-red font-bold">Momentum is</strong>{" "}
               more than speed. It is the tension between stillness and motion, between holding on
               and letting go. It is the paradox that propels us forward: the more we strive, the
               more we risk emptiness; the more we stay content, the more we risk complacency.
             </p>
             <p>
               For this generation,{" "}
-              <strong className="text-tedx-red">momentum is not</strong>{" "}
+              <strong className="text-tedx-red font-bold">momentum is not</strong>{" "}
               inherited – it is created. Where older generations found momentum in stability and
               persistence, Gen Z discovers it in disruption, restlessness, and reinvention. We do
               not settle for linear paths; we carve infinite ones. And yet, this abundance of
               choice is both our freedom and our burden.
             </p>
             <p>
-              <strong className="text-tedx-red">Momentum</strong>
+              <strong className="text-tedx-red font-bold">Momentum</strong>
               {", then, "}
-              <strong className="text-tedx-red">is the</strong>{" "}
+              <strong className="text-tedx-red font-bold">is the</strong>{" "}
               mirror of our time: it reflects both possibility and limitation, both clouds and
               rain. It is not about choosing one side of the paradox but embracing the push and
               pull that keeps us alive, evolving, and in motion.
@@ -61,7 +65,7 @@ export default function WhatIsMomentumSection() {
               TEDxAteneoDeManilaU invites you to experience momentum not as a passive talk, but
               as a lived encounter – with experiments, performances, and interactions that make
               paradox visible. Because{" "}
-              <strong className="text-tedx-red">momentum is not</strong>{" "}
+              <strong className="text-tedx-red font-bold">momentum is not</strong>{" "}
               just an idea to discuss. It is a force to feel.
             </p>
           </div>
@@ -91,8 +95,12 @@ function WatchTrailerButton() {
       style={{ transform: "rotate(10deg)" }}
       aria-label="Watch the Momentum trailer on Facebook"
     >
-      <img src={imgEmbedMedia} alt="" className="absolute inset-0 w-full h-full object-cover" />
-      <span className="relative z-10 font-bold text-white text-center text-medium leading-tight uppercase">
+      <img
+        src="/momentum/watch-trailer.svg"
+        alt=""
+        className="absolute inset-0 w-full h-full"
+      />
+      <span className="relative z-10 font-bold text-white text-center text-lg leading-tight uppercase">
         WATCH
         <br />
         TRAILER

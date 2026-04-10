@@ -57,6 +57,7 @@ const config: Config = {
       fontFamily: {
         sans: ['Helvetica', 'Arial', 'sans-serif'],
         bold: ['Helvetica Bold', 'Helvetica Neue Bold', 'Arial Bold', 'sans-serif'],
+        display: ['var(--font-league-gothic)', 'Impact', 'sans-serif'],
       },
       fontSize: {
         'heading': ['1.5rem', { lineHeight: '1.2', fontWeight: '700' }], // 24pt ≈ 1.5rem

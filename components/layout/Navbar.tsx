@@ -70,8 +70,8 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`sticky top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-md shadow-lg" : "bg-black"
-          } px-3 py-4 sm:p-4`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-md shadow-lg" : "bg-black"
+          } p-4`}
       >
         <div className="mx-auto w-full px-0 sm:px-6 lg:px-8 xl:px-10">
           <div className="flex items-center justify-between gap-3 py-1 text-sm font-bold text-white xl:text-base lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-8">

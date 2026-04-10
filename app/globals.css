@@ -242,3 +242,94 @@
     }
   }
 }
+
+@keyframes walk-right {
+  from { transform: translateX(-120vw); }
+  to   { transform: translateX(120vw); }
+}
+
+.walk-fig-1 {
+  animation-name: walk-right;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+}
+
+.walk-fig-2 {
+  animation-name: walk-right;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: -5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walk-fig-1,
+  .walk-fig-2 {
+    animation-name: none;
+  }
+}
+
+/* ─── Talks section: scroll-triggered entrance animations ────────── */
+
+@keyframes talks-slide-tl {
+  from { opacity: 0; transform: translate(-18%, -18%) scale(0.92); }
+  to   { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes talks-slide-tr {
+  from { opacity: 0; transform: translate(18%, -18%) scale(0.92); }
+  to   { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes talks-slide-bl {
+  from { opacity: 0; transform: translate(-18%, 18%) scale(0.92); }
+  to   { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes talks-slide-br {
+  from { opacity: 0; transform: translate(18%, 18%) scale(0.92); }
+  to   { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes talks-quiz-pop {
+  from { opacity: 0; transform: scale(0.6); }
+  60%  { opacity: 1; transform: scale(1.04); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes talks-heading-in {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes talks-bar-expand {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+@keyframes talks-crowd-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.talks-enter-tl, .talks-enter-tr, .talks-enter-bl, .talks-enter-br,
+.talks-enter-quiz, .talks-enter-heading, .talks-enter-bar, .talks-enter-crowd {
+  opacity: 0;
+}
+
+.talks-visible .talks-enter-heading { animation: talks-heading-in 0.6s ease-out forwards; animation-delay: 0s; }
+.talks-visible .talks-enter-bar     { animation: talks-bar-expand 0.5s ease-out forwards; animation-delay: 0.2s; }
+.talks-visible .talks-enter-tl      { animation: talks-slide-tl 0.8s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.05s; }
+.talks-visible .talks-enter-tr      { animation: talks-slide-tr 0.8s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.15s; }
+.talks-visible .talks-enter-bl      { animation: talks-slide-bl 0.8s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.25s; }
+.talks-visible .talks-enter-br      { animation: talks-slide-br 0.8s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.35s; }
+.talks-visible .talks-enter-quiz    { animation: talks-quiz-pop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards; animation-delay: 0.55s; }
+.talks-visible .talks-enter-crowd   { animation: talks-crowd-in 1s ease-out forwards; animation-delay: 0.6s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .talks-enter-tl, .talks-enter-tr, .talks-enter-bl, .talks-enter-br,
+  .talks-enter-quiz, .talks-enter-heading, .talks-enter-bar, .talks-enter-crowd {
+    opacity: 1;
+  }
+  .talks-visible .talks-enter-tl, .talks-visible .talks-enter-tr,
+  .talks-visible .talks-enter-bl, .talks-visible .talks-enter-br,
+  .talks-visible .talks-enter-quiz, .talks-visible .talks-enter-heading,
+  .talks-visible .talks-enter-bar, .talks-visible .talks-enter-crowd {
+    animation: none; opacity: 1;
+  }
+}

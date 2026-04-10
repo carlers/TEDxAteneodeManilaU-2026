@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Reveal from "@/app/components/Reveal";
 
 const imgSpotlight = "/speakers/spotlight.png";
 const imgWall = "/speakers/hallway-wall.png";
@@ -165,7 +166,7 @@ export default function SpeakersSection() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center px-7 pt-[13%] pb-[5%]">
         {/* Heading + subtitle */}
-        <div className="flex flex-col items-center gap-6 text-center text-white max-w-[752px]">
+        <Reveal variant="fade-up" className="flex flex-col items-center gap-6 text-center text-white max-w-[752px]">
           <h2
             className="font-display leading-none tracking-[-0.04em]"
             style={{
@@ -178,13 +179,15 @@ export default function SpeakersSection() {
           <p className="font-sans text-lg">
             Open the doors to see their details!
           </p>
-        </div>
+        </Reveal>
 
         {/* ── Desktop hallway (md+) ──────────────────────────────── */}
         <div className="hidden md:flex w-full max-w-[1384px] mx-auto mt-[50px]">
           {slots.map((slot, i) => (
-            <div
+            <Reveal
               key={i}
+              variant="fade-up"
+              delay={0.15 + i * 0.12}
               className="relative shrink-0"
               style={{ width: slot.width, aspectRatio: slot.aspect }}
             >
@@ -215,15 +218,17 @@ export default function SpeakersSection() {
                   onClick={() => toggle(i + 1)}
                 />
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
         {/* ── Mobile doors (< md) ────────────────────────────────── */}
         <div className="md:hidden grid grid-cols-2 gap-5 mt-10 w-full max-w-[340px] mx-auto">
-          {[1, 2, 3, 4].map((n) => (
-            <div
+          {[1, 2, 3, 4].map((n, i) => (
+            <Reveal
               key={n}
+              variant="zoom-in"
+              delay={0.1 + i * 0.1}
               className="relative rounded-t-md overflow-hidden"
               style={{
                 border: "3px solid #eb0028",
@@ -237,7 +242,7 @@ export default function SpeakersSection() {
                 onClick={() => toggle(n)}
                 compact
               />
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

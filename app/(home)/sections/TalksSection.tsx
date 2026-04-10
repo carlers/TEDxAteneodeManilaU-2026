@@ -290,8 +290,8 @@
           </button>
 
           {/* ── Section heading ───────────────────────────── */}
-          <div className="absolute z-20 text-center talks-enter-heading"
-              style={{ left: "49.72%", top: "1.47%", transform: "translateX(-50%)", width: "51.52%" }}>
+          <div className="absolute z-20 text-center talks-enter-heading left-1/2 -translate-x-1/2"
+              style={{ top: "1.47%" }}>
             <p className="font-display text-white whitespace-nowrap leading-none"
               style={{ fontSize: v(128), letterSpacing: "-0.04em", textShadow: "0 4px 25px rgba(0,0,0,.35)" }}>
               FEATURED <span className="text-tedx-red">TALKS</span>
@@ -299,8 +299,8 @@
           </div>
 
           {/* ── Gray bar ─────────────────────────────────── */}
-          <div className="absolute bg-[#d9d9d9] talks-enter-bar origin-center"
-              style={{ left: "36.36%", top: "11.86%", width: "26.94%", height: "1.84%" }} />
+          <div className="absolute bg-[#d9d9d9] talks-enter-bar origin-center left-1/2 -translate-x-1/2"
+              style={{ top: "11.86%", width: "26.94%", height: "1.84%" }} />
 
           {/* ── Crowd silhouettes ─────────────────────────── */}
           <div className="absolute overflow-hidden pointer-events-none talks-enter-crowd"

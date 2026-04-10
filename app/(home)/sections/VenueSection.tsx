@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Reveal from "@/app/components/Reveal";
 
 const VENUE_NAME = "Leong Hall, Ateneo de Manila University";
 const VENUE_ADDRESS = "Katipunan Avenue, Loyola Heights, Quezon City";
@@ -16,7 +17,7 @@ export default function VenueSection() {
   return (
     <section id="venue" className="w-full bg-black relative overflow-hidden">
       {/* Heading */}
-      <div className="relative z-10 pt-8 sm:pt-12 pb-4 px-4">
+      <Reveal variant="fade-up" className="relative z-10 pt-8 sm:pt-12 pb-4 px-4">
         <h2
           className="font-display text-white text-center leading-none tracking-[-0.04em]"
           style={{
@@ -26,10 +27,10 @@ export default function VenueSection() {
         >
           THE <span className="text-tedx-red">VENUE</span>
         </h2>
-      </div>
+      </Reveal>
 
       {/* Map area */}
-      <div className="relative w-full" style={{ height: "clamp(300px, 40vw, 540px)" }}>
+      <Reveal variant="fade-up" delay={0.2} className="relative w-full" style={{ height: "clamp(300px, 40vw, 540px)" }}>
         {/* Google Maps embed — non-interactive */}
         <div className="absolute inset-0 pointer-events-none">
           <iframe
@@ -133,7 +134,7 @@ export default function VenueSection() {
             </div>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

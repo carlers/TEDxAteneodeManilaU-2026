@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { League_Gothic } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AppProviders from "@/components/providers/AppProviders";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
-
-const leagueGothic = League_Gothic({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-league-gothic",
-  display: "swap",
-});
+import { inter, leagueGothic } from "@/app/fonts";
 
 
 export const metadata: Metadata = {

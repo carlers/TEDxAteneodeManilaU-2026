@@ -140,104 +140,104 @@ function ParticleWaves() {
 export default function AboutTedTedxSection() {
   return (
     <section id="about-tedx-ateneo" className="bg-tedx-black text-tedx-white">
-        <div className="flex gap-32 px-12 md:px-24 pt-24">
-            <div className="w-[610px] shrink-0">
-                <div className="flex items-center gap-6 mb-8">
-                    <h2 className="font-league-gothic text-[128px] leading-none tracking-[-0.05em]">
-                        ABOUT <span className="text-tedx-red">TED</span>
-                    </h2>
-                    <a href="https://www.ted.com/about/programs-initiatives/tedx-program"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="
-                            group relative flex items-center justify-center ml-4
-                            w-24 h-24 rounded-full shrink-0
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-14 px-4 pt-14 sm:px-6 sm:pt-16 md:px-10 md:pt-20 lg:flex-row lg:gap-32 lg:px-24 lg:pt-24">
+        <div className="w-full shrink-0 lg:w-[610px]">
+          <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+            <h2 className="font-league-gothic text-[clamp(4rem,17vw,128px)] leading-none tracking-[-0.05em] lg:text-[128px]">
+              ABOUT <span className="text-tedx-red">TED</span>
+            </h2>
+            <a href="https://www.ted.com/about/programs-initiatives/tedx-program"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+              group relative ml-0 flex h-20 w-20 shrink-0 items-center justify-center rounded-full
+              sm:ml-4 sm:h-24 sm:w-24
                             bg-tedx-red
                             active:bg-tedx-gray active:scale-95
                             transition-all duration-150 cursor-pointer
                         "
-                        >
-                        
-                        <span
-                            className="
-                            absolute rounded-full w-[138px] h-[138px]
+            >
+
+              <span
+                className="
+                            absolute h-[112px] w-[112px] rounded-full sm:h-[138px] sm:w-[138px]
                             bg-[url('/btn-hvr-splat.png')] bg-cover bg-center
                             opacity-0 group-hover:opacity-100
                             transition-opacity duration-200
                             "
-                        />
-                        <span
-                            className="
+              />
+              <span
+                className="
                             relative z-10 rotate-[10deg]
-                            font-inter font-bold text-[1.1rem] leading-tight tracking-[-0.03em] text-center
+                            font-inter text-center text-[0.95rem] font-bold leading-tight tracking-[-0.03em] sm:text-[1.1rem]
                             text-tedx-white group-hover:text-tedx-red active:text-tedx-red
                             "
-                        >
-                            LEARN<br />MORE
-                        </span>
-                    </a>
-                </div>
-                <div className="space-y-6 text-tedx-white text-[16px] leading-wide">
-                    <p>
-                        <span className="text-tedx-red font-bold">TED is an</span> annual
-                        event where some of the world's leading thinkers and doers are
-                        invited to share what they are most passionate about. "TED" stands
-                        for Technology, Entertainment, Design — three broad subject areas
-                        that are, collectively, shaping our future. And in fact, the event
-                        is broader still, showcasing ideas that matter in any discipline.
-                        Attendees have called it "the ultimate brain spa" and "a four-day
-                        journey into the future." The diverse audience — CEOs, scientists,
-                        creatives, philanthropists — is almost as extraordinary as the
-                        speakers, who have included Bill Clinton, Bill Gates, Jane
-                        Goodall, Frank Gehry, Paul Simon, Sir Richard Branson, Philippe
-                        Starck and Bono.
-                    </p>
-                    <p>
-                        <span className="text-tedx-red font-bold">TED was</span> first
-                        held in Monterey, California, in 1984. In 2001, Chris Anderson's
-                        Sapling Foundation acquired TED from its founder, Richard Saul
-                        Wurman. In recent years, TED has expanded to include an
-                        international conference, TEDGlobal; media initiatives, including
-                        TED Talks and TED.com; and the TED Prize. TED2010, “What the world 
-                        Needs Now,” will be held Feb 9-13, 2010, in Long Beach, California, 
-                        with a simulcast event in Palm Springs, California. TEDGlobal 2009, 
-                        “The Substance of Things Not Seen,” will be held July 21-24, 2009, 
-                        in Oxford, UK and TEDIndia will be held in November 2009.
-                    </p>
-                </div>
-            </div>
-
-            <div className="w-[480px] shrink-0">
-                <h2 className="font-league-gothic text-[128px] leading-none tracking-tighter mb-8 mt-36">
-                    ABOUT <span className="text-tedx-red">TEDx</span>
-                </h2>
-                <div className="space-y-6 text-tedx-white text-[16px] leading-wide">
-                    <p>
-                    In the spirit of ideas worth spreading,{" "}
-                    <span className="text-tedx-red font-bold">TEDx is a</span>{" "}
-                    program of local, self-organized events that bring people together
-                    to share a TED-like experience.
-                    </p>
-                    <p>
-                    At a TEDx event, TEDTalks video and live speakers combine to spark
-                    deep discussion and connection in a small group. These local,
-                    self-organized events are branded TEDx, where x=independently
-                    organized TED event.
-                    </p>
-                    <p>
-                    The TED Conference provides general guidance for the TEDx program,
-                    but individual TEDx events are self-organized.*
-                    </p>
-                    <p className="text-tedx-muted-text text-caption">
-                    (*Subject to certain rules and regulations)
-                    </p>
-                </div>
-            </div>
+              >
+                LEARN<br />MORE
+              </span>
+            </a>
+          </div>
+          <div className="space-y-6 text-[15px] leading-7 text-tedx-white sm:text-[16px] sm:leading-wide">
+            <p>
+              <span className="text-tedx-red font-bold">TED is an</span> annual
+              event where some of the world's leading thinkers and doers are
+              invited to share what they are most passionate about. "TED" stands
+              for Technology, Entertainment, Design — three broad subject areas
+              that are, collectively, shaping our future. And in fact, the event
+              is broader still, showcasing ideas that matter in any discipline.
+              Attendees have called it "the ultimate brain spa" and "a four-day
+              journey into the future." The diverse audience — CEOs, scientists,
+              creatives, philanthropists — is almost as extraordinary as the
+              speakers, who have included Bill Clinton, Bill Gates, Jane
+              Goodall, Frank Gehry, Paul Simon, Sir Richard Branson, Philippe
+              Starck and Bono.
+            </p>
+            <p>
+              <span className="text-tedx-red font-bold">TED was</span> first
+              held in Monterey, California, in 1984. In 2001, Chris Anderson's
+              Sapling Foundation acquired TED from its founder, Richard Saul
+              Wurman. In recent years, TED has expanded to include an
+              international conference, TEDGlobal; media initiatives, including
+              TED Talks and TED.com; and the TED Prize. TED2010, “What the world
+              Needs Now,” will be held Feb 9-13, 2010, in Long Beach, California,
+              with a simulcast event in Palm Springs, California. TEDGlobal 2009,
+              “The Substance of Things Not Seen,” will be held July 21-24, 2009,
+              in Oxford, UK and TEDIndia will be held in November 2009.
+            </p>
+          </div>
         </div>
 
-        <div className="w-full overflow-hidden">
-            <ParticleWaves />
+        <div className="w-full shrink-0 lg:w-[480px]">
+          <h2 className="mb-8 mt-2 font-league-gothic text-[clamp(4rem,17vw,128px)] leading-none tracking-tighter md:mt-4 lg:mt-36 lg:text-[128px]">
+            ABOUT <span className="text-tedx-red">TEDx</span>
+          </h2>
+          <div className="space-y-6 text-[15px] leading-7 text-tedx-white sm:text-[16px] sm:leading-wide">
+            <p>
+              In the spirit of ideas worth spreading,{" "}
+              <span className="text-tedx-red font-bold">TEDx is a</span>{" "}
+              program of local, self-organized events that bring people together
+              to share a TED-like experience.
+            </p>
+            <p>
+              At a TEDx event, TEDTalks video and live speakers combine to spark
+              deep discussion and connection in a small group. These local,
+              self-organized events are branded TEDx, where x=independently
+              organized TED event.
+            </p>
+            <p>
+              The TED Conference provides general guidance for the TEDx program,
+              but individual TEDx events are self-organized.*
+            </p>
+            <p className="text-tedx-muted-text text-caption">
+              (*Subject to certain rules and regulations)
+            </p>
+          </div>
         </div>
+      </div>
+
+      <div className="w-full overflow-hidden">
+        <ParticleWaves />
+      </div>
     </section>
   );
 }

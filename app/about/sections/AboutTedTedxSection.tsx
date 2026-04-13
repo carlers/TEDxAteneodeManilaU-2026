@@ -2,15 +2,14 @@
 
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { div } from "three/src/nodes/tsl/TSLBase.js";
 
 function ParticleWaves() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene>();
-  const rendererRef = useRef<THREE.WebGLRenderer>();
-  const cameraRef = useRef<THREE.PerspectiveCamera>();
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const particlesRef = useRef<THREE.Sprite[]>([]);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const countRef = useRef(0);
   const mouseRef = useRef({ x: 0, y: 0 });
 

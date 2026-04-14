@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useMutation } from "convex/react";
+import posthog from "posthog-js";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import {
@@ -176,6 +177,10 @@ export default function RegisterPage() {
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 10_000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    posthog.capture("registration_started");
   }, []);
 
   const computedLines = useMemo<ComputedLine[]>(() => {
@@ -468,7 +473,13 @@ export default function RegisterPage() {
       return;
     }
     setStepError("");
-    setCurrentStep((step) => getNextStep(step));
+    const nextStepNum = getNextStep(currentStep);
+    posthog.capture("registration_step_advanced", {
+      from_step: currentStep,
+      to_step: nextStepNum,
+      purchase_mode: purchaseMode,
+    });
+    setCurrentStep(nextStepNum);
   };
 
   const prevStep = () => {
@@ -535,11 +546,22 @@ export default function RegisterPage() {
         })),
         paymentProofStorageId,
       });
+      const primaryEmail = attendees[0]?.email ?? "";
+      if (primaryEmail) {
+        posthog.identify(primaryEmail, { name: attendees[0]?.fullName });
+      }
+      posthog.capture("registration_submitted", {
+        reference_code: result.referenceCode,
+        total_amount: totalAmount,
+        purchase_mode: purchaseMode,
+        attendee_count: attendees.length,
+        participant_type: attendees[0]?.participantType,
+      });
       setSuccessReceipt({
         referenceCode: result.referenceCode,
         totalAmount,
         primaryName: attendees[0]?.fullName ?? "Primary attendee",
-        primaryEmail: attendees[0]?.email ?? "",
+        primaryEmail,
         attendeeNames: attendees.map((a) => a.fullName),
       });
       setSubmitMessage("");
@@ -547,11 +569,17 @@ export default function RegisterPage() {
       setLastSavedAt(null);
       setProofFile(null);
     } catch (errorValue) {
-      setSubmitMessage(
-        errorValue instanceof Error
-          ? errorValue.message
-          : "Something went wrong during submission.",
-      );
+      const errorMsg = errorValue instanceof Error ? errorValue.message : "Something went wrong during submission.";
+      setSubmitMessage(errorMsg);
+      posthog.captureException(errorValue instanceof Error ? errorValue : new Error(errorMsg), {
+        purchase_mode: purchaseMode,
+        attendee_count: attendees.length,
+      });
+      posthog.capture("registration_submission_error", {
+        error_message: errorMsg,
+        purchase_mode: purchaseMode,
+        attendee_count: attendees.length,
+      });
     } finally {
       setIsSubmitting(false);
     }

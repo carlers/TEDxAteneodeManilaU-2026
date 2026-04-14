@@ -1,7 +1,8 @@
- "use client";
+"use client";
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 import Reveal from "@/app/components/Reveal";
 
 type ParticipantType = "atenean" | "scholar" | "non_atenean";
@@ -18,6 +19,7 @@ export default function ContactUsSection() {
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fullName = `${firstName} ${lastName}`.trim();
+    posthog.capture("contact_form_submitted", { participant_type: participantType });
     const params = new URLSearchParams({
       fullName,
       email,

@@ -3,6 +3,7 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth } from "convex/react";
 import Link from "next/link";
+import posthog from "posthog-js";
 
 export default function AdminLoginPage() {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -40,7 +41,10 @@ export default function AdminLoginPage() {
               </p>
               <button
                 type="button"
-                onClick={() => void signIn("google", { redirectTo: "/admin/overview" })}
+                onClick={() => {
+                  posthog.capture("admin_login_clicked", { provider: "google" });
+                  void signIn("google", { redirectTo: "/admin/overview" });
+                }}
                 className="mt-4 rounded-md bg-tedx-accent px-4 py-2 text-sm font-bold uppercase hover:bg-tedx-accent-hover"
               >
                 Sign in with Google

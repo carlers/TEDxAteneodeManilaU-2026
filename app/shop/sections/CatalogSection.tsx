@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import posthog from "posthog-js";
 
 import { inter, leagueGothic } from "@/app/fonts";
 import { MERCH_ORDER_PLACEHOLDER_URL } from "@/app/shop/constants";
@@ -66,6 +69,7 @@ export default function CatalogSection() {
               href={MERCH_ORDER_PLACEHOLDER_URL}
               rel="noreferrer"
               target="_blank"
+              onClick={() => posthog.capture("merch_order_now_clicked")}
             >
               <span className={inter.className}>
                 Order Now&nbsp;&rarr;

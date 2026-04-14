@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import posthog from "posthog-js";
 import Reveal from "@/app/components/Reveal";
 
 const imgSpotlight = "/speakers/spotlight.png";
@@ -246,6 +247,14 @@ export default function SpeakersSection() {
     const next = openDoor === id ? null : id;
     setOpenDoor(next);
     replaceUrlWithSpeakerHash(next);
+    if (next !== null) {
+      const speaker = speakerDetails.find((s) => s.id === next);
+      posthog.capture("speaker_door_opened", {
+        speaker_id: next,
+        speaker_name: speaker?.speakerLabel,
+        talk_title: speaker?.talkTitle,
+      });
+    }
   };
 
   return (

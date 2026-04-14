@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import posthog from "posthog-js";
 import Reveal from "@/app/components/Reveal";
 
 function ChevronDownIcon() {
@@ -67,7 +68,11 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number>(0);
 
   const toggleItem = (index: number) => {
+    const isOpening = openIndex !== index;
     setOpenIndex((current) => (current === index ? -1 : index));
+    if (isOpening) {
+      posthog.capture("faq_item_expanded", { question: faqItems[index]?.question, index });
+    }
   };
 
   return (

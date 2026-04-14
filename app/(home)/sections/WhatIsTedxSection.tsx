@@ -108,10 +108,10 @@ export default function WhatIsTedxSection() {
         <ChatBubble
           style={{ top: "56%", left: "68%" }}
           tailSide="right"
-          author="Zach Iglesia"
+          author="Kei Tulud"
           year="2026"
-          attendee="Entertainment Associate"
-          quote="What stood out most was how welcoming the community was. People from different fields connected instantly."
+          attendee="Talent Management Associate"
+          quote="Working with TEDxAteneodeManilaU was something I looked forward to, ever since I found out about it in campus. When I got accepted, I got to work with dream driven people who wanted to make things come to reality. Challenges were present, but it was never an obstacle to lose face to. TEDxAteneodeManilaU allowed me to meet wonderful people, and learn more about people especially the different voices we get to share together."
         />
       </Reveal>
 

@@ -115,18 +115,38 @@ export default function FaqSection() {
                       }`}
                       aria-hidden="true"
                     >
-                      {isOpen ? <CloseIcon /> : <ChevronDownIcon />}
+                      <span className="relative inline-flex h-6 w-6 items-center justify-center">
+                        <span
+                          className={`absolute transition-all duration-300 ease-out ${
+                            isOpen ? "scale-75 opacity-0" : "scale-100 opacity-100"
+                          }`}
+                        >
+                          <ChevronDownIcon />
+                        </span>
+                        <span
+                          className={`absolute transition-all duration-300 ease-out ${
+                            isOpen ? "scale-100 opacity-100" : "scale-75 opacity-0"
+                          }`}
+                        >
+                          <CloseIcon />
+                        </span>
+                      </span>
                     </span>
                   </button>
 
-                  {isOpen && (
-                    <p
-                      id={`faq-panel-${index}`}
-                      className="mt-7 max-w-[1000px] text-[16px] leading-[1.45] text-tedx-muted-text"
-                    >
-                      {item.answer}
-                    </p>
-                  )}
+                  <div
+                    id={`faq-panel-${index}`}
+                    className={`grid overflow-hidden transition-all duration-300 ease-out ${
+                      isOpen ? "mt-7 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
+                    }`}
+                    aria-hidden={!isOpen}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="max-w-[1000px] text-[16px] leading-[1.45] text-tedx-muted-text">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
                 </article>
               );
             })}

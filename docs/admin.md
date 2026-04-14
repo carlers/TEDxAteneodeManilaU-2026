@@ -2,6 +2,11 @@
 
 ## Routes
 
+### `/admin`
+
+- **File:** `app/admin/page.tsx`
+- **Behavior:** Automatically redirects to `/admin/overview`.
+
 ### `/admin/login`
 
 - **File:** `app/admin/login/page.tsx`
@@ -11,8 +16,14 @@
 ### `/admin/registrations`
 
 - **File:** `app/admin/registrations/page.tsx`
-- **Behavior:** Loads registrations list/details, shows payment proof + reference code, and supports status updates (`submitted`/`verified`) for payment confirmation.
-- **Navigation:** Uses a sidebar admin shell with links to registrations and admin management.
+- **Behavior:** Loads registrations list/details in a table + detail workflow, shows payment proof + reference code, and supports status updates (`submitted`/`verified`) for payment confirmation.
+- **Navigation:** Uses a sidebar admin shell with links to overview, registrations, and admin management.
+
+### `/admin/overview`
+
+- **File:** `app/admin/overview/page.tsx`
+- **Behavior:** Displays summary metrics (totals, attendees, pending/verified counts, and revenue breakdowns).
+- **Navigation:** Uses the same sidebar admin shell; intended for summary-only view.
 
 ### `/admin/management`
 

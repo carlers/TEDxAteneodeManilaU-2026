@@ -132,30 +132,6 @@ function exportCSV(registrations: RegistrationRecord[]) {
 }
 
 // ---------------------------------------------------------------------------
-// Stat card
-// ---------------------------------------------------------------------------
-
-function StatCard({
-  label,
-  value,
-  sub,
-  accent,
-}: {
-  label: string;
-  value: string | number;
-  sub?: string;
-  accent?: boolean;
-}) {
-  return (
-    <div className="rounded-xl border border-tedx-outline-strong bg-tedx-black p-4">
-      <p className="text-xs font-semibold uppercase tracking-wider text-tedx-muted-text">{label}</p>
-      <p className={`mt-1 text-2xl font-bold ${accent ? "text-tedx-accent" : ""}`}>{value}</p>
-      {sub && <p className="mt-1 text-xs text-tedx-muted-text">{sub}</p>}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
 // Main page
 // ---------------------------------------------------------------------------
 
@@ -195,35 +171,6 @@ export default function AdminRegistrationsPage() {
     if (!selectedRegistration) return 0;
     return selectedRegistration.ticketLines.reduce((sum, line) => sum + line.lineTotal, 0);
   }, [selectedRegistration]);
-
-  const stats = useMemo(() => {
-    const records = registrations ?? [];
-    const verified = records.filter((r) => r.status === "verified").length;
-    const pending = records.length - verified;
-    let totalRevenue = 0;
-    let verifiedRevenue = 0;
-    let totalAttendees = 0;
-    const typeCounts = { atenean: 0, scholar: 0, non_atenean: 0 };
-
-    for (const reg of records) {
-      const regTotal = reg.ticketLines.reduce((s, l) => s + l.lineTotal, 0);
-      totalRevenue += regTotal;
-      if (reg.status === "verified") verifiedRevenue += regTotal;
-      totalAttendees += reg.attendees.length;
-      for (const a of reg.attendees) typeCounts[a.participantType]++;
-    }
-
-    return {
-      total: records.length,
-      verified,
-      pending,
-      totalRevenue,
-      verifiedRevenue,
-      pendingRevenue: totalRevenue - verifiedRevenue,
-      totalAttendees,
-      typeCounts,
-    };
-  }, [registrations]);
 
   const filteredRegistrations = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -331,7 +278,7 @@ export default function AdminRegistrationsPage() {
   return (
     <AdminShell
       title="Admin Registrations"
-      description="Protected by Convex authentication and admin checks."
+      description="Table + detail workflow for registration review. Summary metrics are under Overview."
       actions={
         <>
           <button
@@ -382,40 +329,6 @@ export default function AdminRegistrationsPage() {
           </div>
         )}
 
-        {/* Stats — row 1 */}
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Total Registrations" value={stats.total} />
-          <StatCard label="Total Attendees" value={stats.totalAttendees} />
-          <StatCard label="Pending" value={stats.pending} sub={formatPhp(stats.pendingRevenue)} />
-          <StatCard
-            label="Verified"
-            value={stats.verified}
-            sub={formatPhp(stats.verifiedRevenue)}
-            accent
-          />
-        </div>
-
-        {/* Stats — row 2 */}
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            label="Total Collected"
-            value={formatPhp(stats.totalRevenue)}
-            sub="all statuses"
-          />
-          <StatCard
-            label="Verified Revenue"
-            value={formatPhp(stats.verifiedRevenue)}
-            sub="confirmed payments"
-            accent
-          />
-          <StatCard
-            label="Students"
-            value={stats.typeCounts.atenean}
-            sub={`${stats.typeCounts.scholar} Scholar`}
-          />
-          <StatCard label="Non-Atenean" value={stats.typeCounts.non_atenean} />
-        </div>
-
         {/* Search + filter */}
         <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]">
           <input
@@ -441,61 +354,79 @@ export default function AdminRegistrationsPage() {
         {!registrations ? (
           <p className="mt-8 text-sm text-tedx-muted-text">Loading registrations…</p>
         ) : (
-          <div className="mt-6 grid gap-6 xl:grid-cols-[440px_1fr]">
+          <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
 
             {/* List */}
-            <div className="rounded-xl border border-tedx-outline-strong bg-tedx-black p-3">
+            <div className="min-w-0 rounded-xl border border-tedx-outline-strong bg-tedx-black p-3">
               <div className="mb-2 px-2 text-[10px] font-bold uppercase text-tedx-muted-text">
                 {filteredRegistrations.length} record{filteredRegistrations.length !== 1 ? "s" : ""}
               </div>
-              <div className="max-h-[620px] space-y-1.5 overflow-y-auto pr-1">
-                {filteredRegistrations.map((reg) => {
-                  const total = reg.ticketLines.reduce((s, l) => s + l.lineTotal, 0);
-                  const currentStatus = reg.status ?? "submitted";
-                  const isSelected = selectedId === reg._id;
-                  return (
-                    <button
-                      key={reg._id}
-                      type="button"
-                      onClick={() => setSelectedId(reg._id)}
-                      className={`block w-full rounded-lg border p-3 text-left transition ${
-                        isSelected
-                          ? "border-tedx-accent bg-tedx-surface-deep"
-                          : "border-tedx-outline-strong bg-tedx-black hover:border-tedx-accent"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-bold">
-                            {reg.attendees[0]?.fullName ?? "Unknown"}
-                          </p>
-                          <p className="truncate text-xs text-tedx-muted-text">
-                            {reg.attendees[0]?.email ?? "No email"}
-                          </p>
-                          <div className="mt-1 flex flex-wrap gap-x-3 text-[11px] text-tedx-muted-text">
-                            <span className="font-bold uppercase text-tedx-accent">
-                              {reg.referenceCode ?? `LEGACY-${reg._id.slice(0, 8)}`}
-                            </span>
-                            <span>
-                              {reg.attendees.length} attendee{reg.attendees.length !== 1 ? "s" : ""}
-                            </span>
-                            <span>{formatPhp(total)}</span>
-                            <span>{formatDateShort(reg.createdAt)}</span>
-                          </div>
-                        </div>
-                        <span
-                          className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold uppercase ${
-                            currentStatus === "verified"
-                              ? "bg-tedx-accent text-tedx-white"
-                              : "bg-tedx-surface-deep text-tedx-muted-text"
-                          }`}
+              <div className="max-h-[620px] overflow-auto rounded-lg border border-tedx-outline-strong">
+                <table className="w-full text-left text-xs">
+                  <thead className="sticky top-0 z-10 border-b border-tedx-outline-strong bg-tedx-black text-[10px] uppercase tracking-wide text-tedx-muted-text">
+                    <tr>
+                      <th className="px-3 py-2">Status</th>
+                      <th className="px-3 py-2">Reference</th>
+                      <th className="px-3 py-2">Primary Attendee</th>
+                      <th className="hidden px-3 py-2 xl:table-cell">Email</th>
+                      <th className="px-3 py-2">Count</th>
+                      <th className="px-3 py-2">Total</th>
+                      <th className="hidden px-3 py-2 lg:table-cell">Submitted</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRegistrations.map((reg) => {
+                      const total = reg.ticketLines.reduce((s, l) => s + l.lineTotal, 0);
+                      const currentStatus = reg.status ?? "submitted";
+                      const isSelected = selectedId === reg._id;
+                      return (
+                        <tr
+                          key={reg._id}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => setSelectedId(reg._id)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              setSelectedId(reg._id);
+                            }
+                          }}
+                          className={`border-b border-tedx-outline-strong/60 last:border-b-0 ${
+                            isSelected ? "bg-tedx-surface-deep/70" : "bg-tedx-black"
+                          } cursor-pointer transition hover:bg-tedx-surface-deep/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-tedx-accent`}
                         >
-                          {currentStatus === "verified" ? "Verified" : "Pending"}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
+                          <td className="px-3 py-2">
+                            <span
+                              className={`inline-flex rounded-full px-2 py-1 text-[10px] font-bold uppercase ${
+                                currentStatus === "verified"
+                                  ? "bg-tedx-accent text-tedx-white"
+                                  : "bg-tedx-surface-deep text-tedx-muted-text"
+                              }`}
+                            >
+                              {currentStatus === "verified" ? "Verified" : "Pending"}
+                            </span>
+                          </td>
+                          <td className="px-3 py-2 font-semibold text-tedx-accent">
+                            {reg.referenceCode ?? `LEGACY-${reg._id.slice(0, 8)}`}
+                          </td>
+                          <td className="px-3 py-2 font-semibold">
+                            {reg.attendees[0]?.fullName ?? "Unknown"}
+                          </td>
+                          <td className="hidden px-3 py-2 text-tedx-muted-text xl:table-cell">
+                            {reg.attendees[0]?.email ?? "No email"}
+                          </td>
+                          <td className="px-3 py-2 text-tedx-muted-text">
+                            {reg.attendees.length} attendee{reg.attendees.length !== 1 ? "s" : ""}
+                          </td>
+                          <td className="px-3 py-2 text-tedx-muted-text">{formatPhp(total)}</td>
+                          <td className="hidden px-3 py-2 text-tedx-muted-text lg:table-cell">
+                            {formatDateShort(reg.createdAt)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
               {filteredRegistrations.length === 0 && (
                 <p className="px-2 py-4 text-sm text-tedx-muted-text">No matching records.</p>
@@ -503,7 +434,7 @@ export default function AdminRegistrationsPage() {
             </div>
 
             {/* Detail panel */}
-            <div className="rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5">
+            <div className="min-w-0 rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-5 lg:sticky lg:top-28 lg:self-start">
               {!selectedRegistration ? (
                 <p className="text-sm text-tedx-muted-text">
                   Select a registration to view details.

@@ -12,6 +12,7 @@ type AdminShellProps = {
 };
 
 const navItems = [
+  { href: "/admin/overview", label: "Overview" },
   { href: "/admin/registrations", label: "Registrations" },
   { href: "/admin/management", label: "Admin Management" },
 ];
@@ -21,8 +22,8 @@ export default function AdminShell({ title, description, actions, children }: Ad
 
   return (
     <section className="min-h-[100dvh] bg-tedx-black px-4 pb-16 pt-28 text-tedx-white sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
-      <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[240px_1fr]">
-        <aside className="rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-4">
+      <div className="grid w-full gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+        <aside className="p-2">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-tedx-muted-text">
             Admin Panel
           </p>
@@ -46,7 +47,7 @@ export default function AdminShell({ title, description, actions, children }: Ad
           </nav>
         </aside>
 
-        <div className="rounded-2xl border border-tedx-outline-strong bg-tedx-surface p-6 sm:p-8">
+        <div className="p-1 sm:p-2">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <h1 className="font-league-gothic text-5xl uppercase tracking-wide sm:text-6xl">

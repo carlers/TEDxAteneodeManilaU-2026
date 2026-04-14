@@ -27,10 +27,10 @@ export default function AdminLoginPage() {
             <div className="rounded-xl border border-tedx-outline-strong bg-tedx-surface-deep p-6">
               <p className="text-sm text-tedx-muted-text">You are signed in.</p>
               <Link
-                href="/admin/registrations"
+                href="/admin/overview"
                 className="mt-4 inline-block rounded-md bg-tedx-accent px-4 py-2 text-sm font-bold uppercase hover:bg-tedx-accent-hover"
               >
-                Go to admin registrations
+                Go to admin overview
               </Link>
             </div>
           ) : (
@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
               </p>
               <button
                 type="button"
-                onClick={() => void signIn("google", { redirectTo: "/admin/registrations" })}
+                onClick={() => void signIn("google", { redirectTo: "/admin/overview" })}
                 className="mt-4 rounded-md bg-tedx-accent px-4 py-2 text-sm font-bold uppercase hover:bg-tedx-accent-hover"
               >
                 Sign in with Google

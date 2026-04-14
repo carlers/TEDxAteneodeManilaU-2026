@@ -6,46 +6,63 @@ import AppProviders from "@/components/providers/AppProviders";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { inter, leagueGothic } from "@/app/fonts";
 
+const SITE_URL = "https://tedxateneodemanilau.com";
+const SITE_NAME = "TEDxAteneodeManilaU";
+const DEFAULT_TITLE = "TEDxAteneodeManilaU 2026 | Momentum";
+const DEFAULT_DESCRIPTION =
+  "TEDxAteneodeManilaU 2026: Momentum is an ideas conference for students and young builders at Ateneo de Manila University. Explore talks on AI, growth, purpose, and change.";
+const DEFAULT_OG_IMAGE = "/tedx-logo.png";
+const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://tedxateneodemanilau.com'),
-  title: "TEDxAteneodeManilaU: Momentum",
-  description: "Join TEDxAteneodeManilaU for Momentum, where we explore...",
-  keywords:
-    'TEDx, TEDxAteneodeManilaU, TEDxAteneo, TEDxADMU, ADMU, Ateneo, Ateneo de Manila University, Momentum, Labyrinthine, April 25 2026, TED Talks, Innovation, Ideas Worth Spreading, Manila, Philippines, Conference, Event, Leong Hall, Ateneo, Katipunan, Loyola Heights, TEDxManila, TEDxPhilippines, Student Conference, University Event, Ateneo Event, TEDx Conference, Public Speaking, Knowledge Sharing, Intellectual Discourse, Academic Conference, University Talks, Student Organization, Ateneo Organizations, TEDx Community, Philippine TEDx',
-  authors: [{ name: 'TEDxAteneodeManilaU Team' }],
-  creator: 'TEDxAteneodeManilaU',
-  publisher: 'TEDxAteneodeManilaU',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    "TEDxAteneodeManilaU",
+    "TEDx Ateneo",
+    "TEDx ADMU",
+    "Ateneo de Manila University",
+    "TEDx Philippines",
+    "Momentum",
+    "TED talks Manila",
+    "student conference Philippines",
+    "ideas worth spreading",
+  ],
+  authors: [{ name: "TEDxAteneodeManilaU Team" }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://tedxateneodemanilau.com',
-    siteName: 'TEDxAteneodeManilaU',
-    title:
-      'TEDxAteneodeManilaU: Momentum',
-    description:
-      'Join TEDxAteneodeManilaU for Momentum, where we explore...',
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
     images: [
       {
-        url: '/tedx-logo.png',
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'TEDxAteneodeManilaU Momentum',
+        alt: "TEDxAteneodeManilaU 2026 Momentum",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title:
-      'TEDxAteneodeManilaU: Momentum',
-    description:
-      'Join TEDxAteneodeManilaU for Momentum, where we explore...',
-    images: ['/tedx-logo.png'],
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
   robots: {
     index: true,
@@ -59,24 +76,26 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://tedxateneodemanilau.com',
+    canonical: SITE_URL,
   },
-  verification: {
-    google: 'your-google-site-verification',
-  },
-  category: 'event',
-  classification: 'public',
-  referrer: 'origin-when-cross-origin',
+  verification: GOOGLE_SITE_VERIFICATION
+    ? {
+        google: GOOGLE_SITE_VERIFICATION,
+      }
+    : undefined,
+  category: "event",
+  classification: "public",
+  referrer: "origin-when-cross-origin",
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
-  manifest: '/site.webmanifest',
+  manifest: "/site.webmanifest",
 };
 
 export const viewport = {
-  themeColor: '#000000',
-  width: 'device-width',
+  themeColor: "#000000",
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
 };

@@ -4,8 +4,8 @@ export default function WhatIsTedxSection() {
   return (
     <section id="what-is-tedx" className="relative w-full bg-black overflow-hidden md:min-h-[900px]">
       {/* Content — stacks on mobile, left column on desktop */}
-      <div className="relative z-10 py-12 md:py-28 px-6 md:pl-20">
-        <div className="w-full md:w-[38%] flex flex-col gap-8 md:gap-10">
+      <div className="relative z-10 py-12 md:py-28 px-6 md:pl-20 pointer-events-none">
+        <div className="w-full md:w-[38%] flex flex-col gap-8 md:gap-10 pointer-events-auto">
           {/* Heading */}
           <Reveal variant="fade-right">
             <h2
@@ -48,19 +48,19 @@ export default function WhatIsTedxSection() {
       </div>
 
       {/* Illustration — flows below text on mobile, absolute on desktop */}
-      <Reveal variant="fade-left" delay={0.2} className="relative md:absolute md:top-[5%] md:bottom-[5%] md:left-[35%] md:right-0 h-[440px] md:h-[90%] pointer-events-none">
+      <Reveal variant="fade-left" delay={0.2} className="relative z-20 md:absolute md:top-[5%] md:bottom-[5%] md:left-[35%] md:right-0 h-[440px] md:h-[90%]">
         {/* Ground path */}
         <img
           src="/about/tedx/path.svg"
           alt=""
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full pointer-events-none"
         />
 
         {/* Crowd silhouettes */}
         <img
           src="/about/tedx/crowd.svg"
           alt=""
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full pointer-events-none"
         />
 
         {/* Red walking person */}
@@ -83,10 +83,36 @@ export default function WhatIsTedxSection() {
         />
 
         {/* Chat bubbles */}
-        <ChatBubble style={{ top: "28%", left: "25%" }} />
-        <ChatBubble style={{ top: "15%", left: "55%" }} flipped />
-        <ChatBubble style={{ top: "48%", left: "48%" }} />
-        <ChatBubble style={{ top: "56%", left: "68%" }} flipped />
+        <ChatBubble
+          style={{ top: "28%", left: "25%" }}
+          author="Isaiah Fermantez"
+          year="2025"
+          attendee="MarkStrat Core"
+          quote="At first, I was wary of the scale. But working alongside such a strong and dedicated team made everything come together. Being part of TEDxAteneodeManilaU resonates deeply with me because it stands as a platform where voices are not just heard, but valued. It reminded me that no voice is too small to deserve a stage. I’m grateful to have played a role in helping these ideas reach more people."
+        />
+        <ChatBubble
+          style={{ top: "15%", left: "55%" }}
+          tailSide="right"
+          author="Ania Ng"
+          year="2025"
+          attendee="Stakeholder Management Associate"
+          quote="Working in TEDx has been an eye-opening experience. I was exposed to different perspectives presented by our speakers and connect with them. It truly is a unique opportunity to hear more about the unheard stories and topics, and how they have deeply affected others. TEDx is an opportunity to listen and connect."
+        />
+        <ChatBubble
+          style={{ top: "48%", left: "48%" }}
+          author="Julianne Go"
+          year="2026"
+          attendee="Creatives Deputy"
+          quote="I joined TED because I saw how different it was from the other organizations and liked the challenge of designing for a new audience. I had so much fun in my time as a core team member for TEDx, and it is one of my favorite projects in college. It was so rewarding to see everything take place and see the progress that led to the final event. The team even had my design as the core team shirt, so I was very happy to see things come to life."
+        />
+        <ChatBubble
+          style={{ top: "56%", left: "68%" }}
+          tailSide="right"
+          author="Zach Iglesia"
+          year="2026"
+          attendee="Entertainment Associate"
+          quote="What stood out most was how welcoming the community was. People from different fields connected instantly."
+        />
       </Reveal>
 
       {/* "Wondering" — desktop only */}
@@ -112,38 +138,59 @@ export default function WhatIsTedxSection() {
 
 function ChatBubble({
   style,
-  flipped,
+  tailSide = "left",
+  quote,
+  author,
+  year,
+  attendee,
 }: {
   style?: React.CSSProperties;
-  flipped?: boolean;
+  tailSide?: "left" | "right";
+  quote: string;
+  author: string;
+  year: string;
+  attendee: string;
 }) {
   return (
     <div
-      className="absolute"
+      className="absolute z-20 hidden h-[34px] w-[42px] md:block"
       style={{
-        width: 42,
-        height: 34,
         ...style,
-        transform: flipped ? "scaleX(-1)" : undefined,
       }}
-      aria-hidden="true"
+      aria-label={`Testimonial from ${author}`}
     >
-      {/* Bubble body */}
-      <div className="absolute top-0 left-0 w-full bg-white rounded-[6px]" style={{ height: 25 }} />
-      {/* Dots */}
-      <img
-        src="/about/tedx/chat-bubble-dots.svg"
-        alt=""
-        className="absolute"
-        style={{ width: 22, height: 5, top: 10, left: 10 }}
-      />
-      {/* Tail */}
-      <img
-        src="/about/tedx/chat-bubble-tail.svg"
-        alt=""
-        className="absolute"
-        style={{ width: 10, height: 12, bottom: 0, left: 5 }}
-      />
+      <button
+        type="button"
+        className="group absolute right-0 top-0 h-[34px] w-[42px] cursor-pointer bg-transparent p-0 text-left transition-all duration-300 ease-out hover:h-[248px] hover:w-[420px] focus-visible:h-[248px] focus-visible:w-[420px]"
+        aria-label={`View testimonial from ${author}`}
+      >
+        <div className="absolute left-0 top-0 h-[25px] w-[42px] rounded-[6px] bg-white transition-all duration-300 ease-out group-hover:h-full group-hover:w-full group-hover:rounded-[40px] group-focus-visible:h-full group-focus-visible:w-full group-focus-visible:rounded-[40px] tedx-popover-shadow" />
+
+        <img
+          src="/about/tedx/chat-bubble-dots.svg"
+          alt=""
+          className="absolute left-[10px] top-[10px] h-[5px] w-[22px] transition-opacity duration-200 group-hover:opacity-0 group-focus-visible:opacity-0"
+        />
+
+        <img
+          src="/about/tedx/chat-bubble-tail.svg"
+          alt=""
+          className="absolute bottom-0 h-[12px] w-[10px] transition-all duration-300 ease-out group-hover:bottom-[-20px] group-hover:h-[26px] group-hover:w-[22px] group-focus-visible:bottom-[-20px] group-focus-visible:h-[26px] group-focus-visible:w-[22px]"
+          style={{
+            left: tailSide === "left" ? 5 : undefined,
+            right: tailSide === "right" ? 5 : undefined,
+            transform: tailSide === "right" ? "scaleX(-1)" : undefined,
+            transformOrigin: tailSide === "right" ? "center" : undefined,
+          }}
+        />
+
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-center px-8 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+          <p className="font-sans text-[12px] leading-7 text-tedx-black">{quote}</p>
+          <p className="mt-3 text-right font-sans text-[15px] font-semibold leading-6 text-tedx-black">
+            {author} <span className="font-medium text-tedx-muted-text">| {year} {attendee}</span>
+          </p>
+        </div>
+      </button>
     </div>
   );
 }

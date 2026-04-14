@@ -2,14 +2,14 @@
 import { useState } from "react";
 import Reveal from "@/app/components/Reveal";
 
-const VENUE_NAME = "Leong Hall, Ateneo de Manila University";
-const VENUE_ADDRESS = "Katipunan Avenue, Loyola Heights, Quezon City";
+const VENUE_NAME = "UP Town Center Cinema 2";
+const VENUE_ADDRESS = "Katipunan Avenue, Diliman, Quezon City";
 const VENUE_DETAILS =
   "Doors Open at 8:00 AM. Free parking will be available within the campus.";
 const MAPS_URL =
-  "https://www.google.com/maps/place/Leong+Hall,+Ateneo+de+Manila+University/@14.6407,121.0774,17z";
+  "https://www.google.com/maps/search/?api=1&query=UP+Town+Center+Cinema+2+Quezon+City";
 const EMBED_URL =
-  "https://maps.google.com/maps?q=Leong+Hall,+Ateneo+de+Manila+University,+Quezon+City&t=&z=17&ie=UTF8&iwloc=&output=embed";
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.069332886801!2d121.07270047524041!3d14.652005675815792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b76f8a819f91%3A0xb0fb074f8ab5d8ac!2sAyala%20Malls%20Cinemas%20U.P.%20Town%20Center!5e0!3m2!1sen!2sph!4v1776166226536!5m2!1sen!2sph";
 
 export default function VenueSection() {
   const [showInfo, setShowInfo] = useState(false);

@@ -5,7 +5,8 @@
 - **Path:** `/register`
 - **Page file:** `app/register/page.tsx`
 - **Purpose:** Collect attendee details in a multi-step flow, enforce a single purchase mode (`individual` or `group_of_three`) per registration, compute JSON-based pricing, display GCash QR instructions, upload payment proof, and submit data to Convex.
-- **UX notes:** Includes top progress bar, local autosave, and “last saved” timestamp feedback.
+- **UX notes:** Includes top progress bar, local autosave, “last saved” timestamp feedback, and mobile-safe top/bottom padding so the full page remains scrollable around the fixed header.
+- **Homepage handoff:** The homepage “Ready to build your momentum?” form links to `/register` and pre-fills Step 1 fields via query params (`fullName`, `email`, `contactNumber`, `schoolAffiliation`, `participantType`). Users can still edit these fields before submitting.
 
 ## Request flow
 

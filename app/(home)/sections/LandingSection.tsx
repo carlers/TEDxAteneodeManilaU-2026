@@ -11,99 +11,70 @@ export default function LandingSection() {
   return (
     <section
       id="landing"
-      className="relative h-screen w-full bg-black overflow-hidden"
+      className="relative min-h-[100dvh] w-full overflow-hidden bg-black"
     >
-      {/* ── Mobile (< md): clean poster layout ─────────────────────── */}
-      <div className="md:hidden relative h-full w-full flex flex-col">
-
-        {/* Brand mark — top-left */}
-        <div className="absolute top-6 left-6 z-20 landing-enter-tedx">
-          <p className="font-display text-white leading-none text-xl tracking-tight">
-            TEDx<span className="text-tedx-red">AteneodeManilaU</span>
-          </p>
-        </div>
-
-        {/* Diagonal red slash — graphic element behind MOMENTUM */}
+      {/* ── Mobile (< md): refined hero layout ─────────────────────── */}
+      <div className="relative flex h-full w-full flex-col md:hidden">
+        <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(80%_65%_at_50%_18%,rgba(255,255,255,0.05),transparent_72%)]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-56 bg-gradient-to-b from-black via-black/92 to-transparent" />
         <div
           aria-hidden="true"
-          className="absolute inset-x-[-20%] z-0 pointer-events-none landing-enter-slash origin-center"
-          style={{
-            top: "42%",
-            height: "28%",
-            transform: "rotate(-12deg)",
-            background: "#eb0028",
-            boxShadow: "0 8px 60px rgba(235,0,40,0.35), 0 0 120px rgba(235,0,40,0.15)",
-          }}
+          className="pointer-events-none absolute inset-x-[-20%] top-[46%] z-0 h-[1px] bg-white/20"
         />
 
-        {/* Main poster content — pushed slightly above center */}
-        <div className="relative z-10 flex-1 flex flex-col justify-center items-center px-6">
+        <div className="relative z-10 flex min-h-[100dvh] flex-col px-5 pb-8 pt-24">
+          <div className="flex flex-1 flex-col justify-center">
+            <div className="landing-enter-title">
+              <p className="mb-4 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/55">
+                Ideas Worth Spreading
+              </p>
+              <h1 className="font-display text-[clamp(4.8rem,21vw,7.4rem)] leading-[0.86] tracking-[-0.03em] text-white">
+                MOMENTUM
+              </h1>
+              <p className="mt-3 max-w-none whitespace-nowrap text-[1.1rem] leading-tight text-white/85">
+                Unlocking Paths, Inspiring Change
+              </p>
+            </div>
 
-          {/* MOMENTUM wordmark */}
-          <h1
-            className="font-display text-white leading-none text-center landing-enter-title"
-            style={{
-              fontSize: "clamp(5.5rem, 23vw, 9rem)",
-              letterSpacing: "-0.02em",
-              textShadow: "0 10px 40px rgba(0,0,0,0.6)",
-            }}
-          >
-            MOMENTUM
-          </h1>
+            <div className="mt-7 landing-enter-register">
+              <Link
+                href="/register"
+                className="inline-flex h-[56px] w-full items-center justify-center rounded-xl border border-tedx-red bg-tedx-red px-5 text-[1rem] font-bold tracking-[0.14em] text-white transition-all duration-200 ease-out hover:bg-tedx-accent-hover active:translate-y-[1px]"
+              >
+                REGISTER NOW
+              </Link>
+            </div>
 
-          {/* Subtitle — clean, left-aligned under the wordmark */}
-          <div className="mt-8 w-full max-w-[320px] landing-enter-subtitle">
-            <p
-              className="font-sans text-white leading-tight"
-              style={{ fontSize: "0.95rem", letterSpacing: "-0.01em" }}
-            >
-              Unlocking Paths,<br />
-              Inspiring Change
-            </p>
-          </div>
-
-          {/* Register button */}
-          <div className="mt-6 w-full max-w-[320px] landing-enter-register">
-            <Link
-              href="/register"
-              className="inline-flex items-center justify-center h-[50px] w-[194px] rounded-[5px] bg-tedx-red text-white font-bold text-[18px]
-                         transition-all duration-150 ease-out
-                         hover:brightness-110 hover:shadow-[0_8px_24px_rgba(235,0,40,0.4)]
-                         active:brightness-90 active:translate-y-[1px] active:shadow-[0_2px_8px_rgba(235,0,40,0.3)]"
-            >
-              REGISTER NOW
-            </Link>
-          </div>
-
-          {/* Thin rule + event details */}
-          <div className="mt-6 w-full max-w-[320px] landing-enter-details">
-            <div
-              aria-hidden="true"
-              className="h-px w-10 bg-white/60 mb-3 landing-rule"
-            />
-            <div className="flex flex-col gap-1 text-tedx-muted-text font-sans uppercase"
-                 style={{ fontSize: "0.68rem", letterSpacing: "0.12em" }}>
-              <span>25 APRIL 2026</span>
-              <span>1:00 — 4:00 PM</span>
-              <span>UP Town Center Cinema 2</span>
+            <div className="mt-6 landing-enter-details">
+              <div className="rounded-xl border border-white/15 bg-white/[0.02] px-4 py-4">
+                <div className="space-y-2.5">
+                  {eventDetails.map(({ icon, text }) => (
+                    <p
+                      key={text}
+                      className="flex items-center gap-2.5 text-[0.74rem] font-semibold uppercase tracking-[0.14em] text-white/78"
+                    >
+                      <Image src={icon} alt="" width={16} height={16} className="shrink-0 opacity-72" />
+                      {text.replace("→", "-")}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Scroll cue — bottom-right */}
-        <div className="absolute bottom-8 right-6 z-20 flex flex-col items-end gap-2 landing-enter-scroll">
-          <span className="font-sans text-white/60 uppercase"
-                style={{ fontSize: "0.6rem", letterSpacing: "0.2em" }}>
-            Scroll
-          </span>
-          <div className="landing-bounce">
-            <Image src="/landing/arrow.svg" alt="" width={22} height={22} className="rotate-180 opacity-60" />
+          <div className="mt-auto flex items-center justify-end gap-2 pt-8 landing-enter-scroll">
+            <span className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-white/55">
+              Scroll
+            </span>
+            <div className="landing-bounce">
+              <Image src="/landing/arrow.svg" alt="" width={20} height={20} className="rotate-180 opacity-55" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* ── Desktop (md+): original layout, untouched ──────────────── */}
-      <div className="hidden md:flex relative h-full w-full flex-col items-center justify-center">
+      <div className="relative hidden min-h-[100dvh] w-full flex-col items-center justify-center md:flex">
         {/* Red trapezoid / perspective stage */}
         <div
           aria-hidden="true"

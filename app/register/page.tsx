@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -147,9 +148,11 @@ function StyledCheckbox({
 }
 
 export default function RegisterPage() {
+  const searchParams = useSearchParams();
   const pricing = getPricingConfig();
   const generateUploadUrl = useMutation(api.registrations.generateUploadUrl);
   const submitRegistration = useMutation(api.registrations.submitRegistration);
+  const prefillAppliedRef = useRef(false);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>("individual");
@@ -317,6 +320,50 @@ export default function RegisterPage() {
     encourageFacebookFollow,
     dataPrivacyConsent,
   ]);
+
+  useEffect(() => {
+    if (!isHydrated || prefillAppliedRef.current) return;
+
+    const fullName = searchParams.get("fullName")?.trim() ?? "";
+    const email = searchParams.get("email")?.trim() ?? "";
+    const contactNumber = searchParams.get("contactNumber")?.trim() ?? "";
+    const schoolAffiliation = searchParams.get("schoolAffiliation")?.trim() ?? "";
+    const participantType = searchParams.get("participantType");
+
+    const validParticipantType =
+      participantType === "atenean" ||
+      participantType === "scholar" ||
+      participantType === "non_atenean"
+        ? participantType
+        : null;
+
+    const hasPrefill =
+      Boolean(fullName) ||
+      Boolean(email) ||
+      Boolean(contactNumber) ||
+      Boolean(schoolAffiliation) ||
+      Boolean(validParticipantType);
+
+    if (!hasPrefill) {
+      prefillAppliedRef.current = true;
+      return;
+    }
+
+    setAttendees((current) => {
+      const firstAttendee = { ...(current[0] ?? initialAttendee) };
+      if (fullName) firstAttendee.fullName = fullName;
+      if (email) firstAttendee.email = email;
+      if (contactNumber) firstAttendee.contactNumber = contactNumber;
+      if (schoolAffiliation) firstAttendee.schoolAffiliation = schoolAffiliation;
+      if (validParticipantType) firstAttendee.participantType = validParticipantType;
+      return [firstAttendee, ...current.slice(1)];
+    });
+
+    setCurrentStep(1);
+    setStepError("");
+    setFieldErrors({});
+    prefillAppliedRef.current = true;
+  }, [isHydrated, searchParams]);
 
   const onProofFileChange = (file: File | null) => {
     setProofUploadError("");
@@ -637,7 +684,7 @@ export default function RegisterPage() {
   }
 
   return (
-      <section className="relative bg-tedx-black px-4 py-8 text-tedx-white sm:px-6 sm:py-12 lg:px-8">
+      <section className="relative overflow-x-hidden bg-tedx-black px-4 pb-16 pt-28 text-tedx-white sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
       {/* Full-screen loading overlay during upload + submit */}
       {isSubmitting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-tedx-black/80 backdrop-blur-sm">

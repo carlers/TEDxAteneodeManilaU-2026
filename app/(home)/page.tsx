@@ -22,7 +22,7 @@ import {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col font-sans text-tedx-white bg-black">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-black font-sans text-tedx-white">
       <LandingSection />
       <WhatIsMomentumSection />
       <WhatIsTedxSection />

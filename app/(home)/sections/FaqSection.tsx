@@ -34,7 +34,7 @@ const faqItems = [
   {
     question: "When and where will the event take place?",
     answer:
-    "The event will take place on April 25 (Saturday), from 1:00 PM to 4:00 PM, at UP Town Center Cinemas.",
+    "The event will take place on April 25 (Saturday), from 1:00 PM to 4:00 PM, at UP Town Center Cinema 2.",
   },
   {
     question: "Who can attend the event?",
@@ -73,14 +73,13 @@ export default function FaqSection() {
   return (
     <section
       id="faq"
-      className="w-full bg-black px-6 py-12 md:px-[120px] md:py-[68px]"
+      className="w-full bg-black px-4 py-12 sm:px-6 md:px-8 md:py-[68px] lg:px-12 xl:px-[120px]"
     >
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-10 md:flex-row md:items-start md:justify-between md:gap-12">
-        <Reveal variant="fade-left" className="flex shrink-0 flex-col items-start gap-[10px] md:w-[640px] md:pt-4">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
+        <Reveal variant="fade-left" className="flex shrink-0 flex-col items-start gap-[10px] lg:w-[540px] lg:pt-4 xl:w-[640px]">
           <h2
-            className="font-display leading-none tracking-[-0.04em] text-white"
+            className="font-display text-[clamp(2.4rem,12vw,150px)] leading-[0.94] tracking-[-0.04em] text-white"
             style={{
-              fontSize: "clamp(3.4rem, 7.2vw, 150px)",
               textShadow: "0 4px 25px rgba(0,0,0,.35)",
             }}
           >
@@ -89,7 +88,7 @@ export default function FaqSection() {
             <span className="text-tedx-red">X</span>SKED QUESTION<span className="text-tedx-red">X</span>
           </h2>
         </Reveal>
-        <Reveal variant="fade-up" delay={0.1} className="w-full md:max-w-[720px]">
+        <Reveal variant="fade-up" delay={0.1} className="w-full lg:max-w-[680px] xl:max-w-[720px]">
           <div className="flex flex-col gap-5">
             {faqItems.map((item, index) => {
               const isOpen = openIndex === index;
@@ -97,7 +96,7 @@ export default function FaqSection() {
               return (
                 <article
                   key={item.question}
-                  className="rounded-[16px] border border-tedx-outline-strong bg-tedx-surface-muted px-6 py-7 md:px-7 md:py-8"
+                  className="rounded-[16px] border border-tedx-outline-strong bg-tedx-surface-muted px-4 py-5 sm:px-6 sm:py-7 md:px-7 md:py-8"
                 >
                   <button
                     type="button"
@@ -106,7 +105,7 @@ export default function FaqSection() {
                     aria-expanded={isOpen}
                     aria-controls={`faq-panel-${index}`}
                   >
-                    <h3 className="text-[18px] font-semibold leading-tight text-tedx-white">
+                    <h3 className="text-base font-semibold leading-tight text-tedx-white sm:text-[18px]">
                       {item.question}
                     </h3>
                     <span
@@ -142,7 +141,7 @@ export default function FaqSection() {
                     aria-hidden={!isOpen}
                   >
                     <div className="overflow-hidden">
-                      <p className="max-w-[1000px] text-[16px] leading-[1.45] text-tedx-muted-text">
+                      <p className="max-w-[1000px] text-sm leading-[1.55] text-tedx-muted-text sm:text-[16px] sm:leading-[1.45]">
                         {item.answer}
                       </p>
                     </div>

@@ -70,7 +70,9 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-md shadow-lg" : "bg-black"
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
+          ? "bg-black/90 backdrop-blur-md shadow-lg"
+          : "bg-black"
           } p-4`}
       >
         <div className="mx-auto w-full px-0 sm:px-6 lg:px-8 xl:px-10">
@@ -273,10 +275,8 @@ export default function Navbar() {
             </div>
 
             <div className="flex shrink-0 items-center gap-2 self-center sm:gap-3 lg:hidden">
-              <RegisterButton />
               <button
-                className={`${mobileMenuOpen ? "text-tedx-red" : "text-tedx-red"
-                  } inline-flex h-9 w-9 items-center justify-center self-center rounded-md text-tedx-red transition-all duration-300 hover:text-tedx-red sm:h-10 sm:w-10`}
+                className={`inline-flex h-10 w-10 items-center justify-center self-center rounded-full border border-tedx-outline-strong bg-black/70 text-tedx-red transition-all duration-300 hover:border-tedx-red sm:h-11 sm:w-11`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
@@ -301,79 +301,43 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={`lg:hidden fixed inset-0 z-40 backdrop-blur-xl bg-black/95 transform transition-all duration-500 ease-in-out ${mobileMenuOpen
+        className={`lg:hidden fixed inset-x-0 bottom-0 top-[76px] z-[45] bg-black transform transition-all duration-500 ease-in-out ${mobileMenuOpen
           ? "translate-y-0 opacity-100"
-          : "translate-y-[-100%] opacity-0"
+          : "translate-y-[-100%] opacity-0 pointer-events-none"
           }`}
-        style={{ top: "0", height: "100vh" }}
       >
-        <div className="flex flex-col h-full justify-center items-center space-y-8 pt-16">
-          <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-            <span
-              className={`${navUnderlineClass} text-white hover:text-tedx-red px-3 py-4 text-base sm:text-lg font-bold uppercase tracking-[0.18em] transition-all duration-350 transform ${mobileMenuOpen
-                ? "translate-x-0 opacity-100"
-                : "translate-x-8 opacity-0"
-                }`}
-              style={{ transitionDelay: "100ms" }}
-            >
-              HOME
-            </span>
-          </Link>
-          <Link href="/about" onClick={() => setMobileMenuOpen(false)}>
-            <span
-              className={`${navUnderlineClass} text-white hover:text-tedx-red px-3 py-4 text-base sm:text-lg font-bold uppercase tracking-[0.18em] transition-all duration-350 transform ${mobileMenuOpen
-                ? "translate-x-0 opacity-100"
-                : "translate-x-8 opacity-0"
-                }`}
-              style={{ transitionDelay: "200ms" }}
-            >
-              ABOUT
-            </span>
-          </Link>
-          <Link href="/event-details" onClick={() => setMobileMenuOpen(false)}>
-            <span
-              className={`${navUnderlineClass} text-white hover:text-tedx-red px-3 py-4 text-base sm:text-lg font-bold uppercase tracking-[0.18em] transition-all duration-350 transform ${mobileMenuOpen
-                ? "translate-x-0 opacity-100"
-                : "translate-x-8 opacity-0"
-                }`}
-              style={{ transitionDelay: "250ms" }}
-            >
-              EVENT DETAILS
-            </span>
-          </Link>
-          <Link href="/core-team" onClick={() => setMobileMenuOpen(false)}>
-            <span
-              className={`${navUnderlineClass} text-white hover:text-tedx-red px-3 py-4 text-base sm:text-lg font-bold uppercase tracking-[0.18em] transition-all duration-350 transform ${mobileMenuOpen
-                ? "translate-x-0 opacity-100"
-                : "translate-x-8 opacity-0"
-                }`}
-              style={{ transitionDelay: "300ms" }}
-            >
-              OUR STORY
-            </span>
-          </Link>
-          <Link href="/shop" onClick={() => setMobileMenuOpen(false)}>
-            <span
-              className={`${navUnderlineClass} text-white hover:text-tedx-red px-3 py-4 text-base sm:text-lg font-bold uppercase tracking-[0.18em] transition-all duration-350 transform ${mobileMenuOpen
-                ? "translate-x-0 opacity-100"
-                : "translate-x-8 opacity-0"
-                }`}
-              style={{ transitionDelay: "400ms" }}
-            >
-              SHOP
-            </span>
-          </Link>
+        <div className="mx-auto flex h-full w-full max-w-md flex-col overflow-y-auto px-8 pb-8 pt-8">
+          <div className="mt-14 flex flex-col gap-2">
+            {[
+              { href: "/", label: "Home" },
+              { href: "/about", label: "About" },
+              { href: "/#talks", label: "Event Details" },
+              { href: "/shop", label: "Merch" },
+              { href: "/team", label: "Team" },
+            ].map((item, index) => (
+              <Link key={item.label} href={item.href} onClick={() => setMobileMenuOpen(false)}>
+                <span
+                  className={`group block w-fit py-1 font-sans text-[42px] font-bold leading-[0.98] tracking-[-0.02em] text-white transition-all duration-300 hover:text-tedx-red ${mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
+                    }`}
+                  style={{ transitionDelay: `${120 + index * 65}ms` }}
+                >
+                  <span className="inline-flex items-center gap-2.5">
+                    {item.label}
+                    <span className="h-px w-0 bg-tedx-red transition-all duration-300 group-hover:w-8" />
+                  </span>
+                </span>
+              </Link>
+            ))}
+          </div>
+
           <div
-            className={`pt-8 transition-all duration-700 transform ${mobileMenuOpen
-              ? "translate-y-0 opacity-100 scale-100"
-              : "translate-y-4 opacity-0 scale-95"
+            className={`mt-auto pt-10 transition-all duration-500 ${mobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
               }`}
-            style={{ transitionDelay: "500ms" }}
+            style={{ transitionDelay: "520ms" }}
           >
             <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-              <span className="bg-tedx-red text-white hover:bg-red-600 px-8 py-3 rounded-md text-xl font-medium cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 relative overflow-hidden group">
-                <span className="relative z-10">Register Now</span>
-                <span className="absolute bottom-0 left-0 w-full h-0 bg-red-700 transition-all duration-300 group-hover:h-full -z-0"></span>
+              <span className="inline-flex w-full items-center justify-center rounded-xl border border-tedx-red bg-tedx-red px-5 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_10px_30px_rgba(216,45,51,0.45)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-tedx-accent-hover hover:shadow-[0_14px_34px_rgba(216,45,51,0.55)]">
+                Register Now
               </span>
             </Link>
           </div>

@@ -1,38 +1,26 @@
 /**
  * Merchandise Shop
- * 
- * Shop page for TEDx-branded merchandise. Displays products with
- * images, descriptions, and prices. Redirects to google forms for payment.
- * 
+ *
+ * Temporary "coming soon" page while the merch catalog is in progress.
+ *
  * @route /shop
  */
-import Image from "next/image";
-import {
-  CatalogSection,
-  TopPicksSection,
-} from "@/app/shop/sections";
 
 export default function ShopPage() {
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-black font-sans text-tedx-white">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute right-[-32rem] top-[26rem] z-0 h-[58rem] w-[62rem] opacity-80 sm:right-[-25rem] sm:top-[30rem] sm:h-[66rem] sm:w-[72rem] lg:right-[-18rem] lg:top-[27.5rem] lg:h-[68.4375rem] lg:w-[74.9375rem]"
-      >
-        <Image
-          alt=""
-          className="object-contain"
-          fill
-          priority={false}
-          sizes="(min-width: 1024px) 1199px, 100vw"
-          src="/merch-page-ellipse.svg"
-        />
+    <section className="relative min-h-screen overflow-x-hidden bg-tedx-black px-4 pb-16 pt-28 text-tedx-white sm:px-6 sm:pt-32">
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center rounded-2xl border border-tedx-outline-strong bg-tedx-surface px-6 py-14 text-center sm:px-10 sm:py-20">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-tedx-muted-text">
+          TEDxAteneodeManilaU Merchandise
+        </p>
+        <h1 className="mt-3 font-league-gothic text-6xl uppercase leading-none tracking-wide sm:text-7xl">
+          Coming Soon
+        </h1>
+        <p className="mt-4 max-w-xl text-sm leading-relaxed text-tedx-muted-text sm:text-base">
+          We are still finalizing our merch lineup. Please check back soon for
+          official drops and order details.
+        </p>
       </div>
-
-      <div className="relative z-10">
-        <TopPicksSection />
-        <CatalogSection />
-      </div>
-    </div>
+    </section>
   );
 }

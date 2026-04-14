@@ -4,19 +4,66 @@ import Reveal from "@/app/components/Reveal";
 
 const imgSpotlight = "/speakers/spotlight.png";
 const imgWall = "/speakers/hallway-wall.png";
-const imgPerson = "/speakers/person-silhouette.png";
 const imgDoorknob = "/speakers/doorknob.svg";
+
+const speakerDetails = [
+  {
+    id: 1,
+    talkTitle: "Mind in Motion: Riding the AI Wave",
+    speakerLabel: "Dominic “Doc” Ligot",
+    description:
+      "This talk explores how AI is reshaping how Gen Z thinks, learns, and creates. Through a live human-vs-AI exchange, it shows how young people can not only ride AI's momentum, but steer it responsibly.",
+    bio:
+      "Dominic “Doc” Ligot is a technologist and entrepreneur recognized as a leading voice in AI in the Philippines. He is the founder of CirroLytix and Data & AI Ethics PH, and serves on the board of the Philippine Artificial Intelligence Business Association as Director for AI Ethics and Data Governance.",
+    images: [{ src: "/speakers/ligot.webp", alt: "Dominic Doc Ligot" }],
+  },
+  {
+    id: 2,
+    talkTitle: "Dark Momentum",
+    speakerLabel: "Jamie Lim",
+    description:
+      "The dark momentum represents the unnoticed side of progress. It dives into the pressure, anxiety, and harmful trade-offs that can come with ambition. In sports, it asks how we pursue success while recognizing that there are things more important than winning: not winning by any means, but winning honestly.",
+    bio:
+      "Jamie Christine Lim is a Filipino karate athlete, courtside reporter, and public figure. A Southeast Asian Games gold medalist, she also graduated summa cum laude in Mathematics from the University of the Philippines Diliman and continues to inspire both on and off the mat.",
+    images: [{ src: "/speakers/jamie.webp", alt: "Jamie Lim" }],
+  },
+  {
+    id: 3,
+    talkTitle: "Self-Momentum: The New Currency of Meaning",
+    speakerLabel: "Eugene Dela Cruz",
+    description:
+      "Love becomes more complex as we grow, shaped by memory, biology, culture, and choice. In that complexity, we ask whether love is created or destined. Ultimately, love is momentum: it carries us through loss, growth, and meaning.",
+    bio:
+      "Eugene Dela Cruz, an Honorable Mention graduate of Ateneo Class of 2025 in Economics (Honors Program), also earned Third Best Undergraduate Thesis in his batch. Once a street dweller, he defied the odds through resilience and perseverance, and now works as a business analyst at Kearney.",
+    images: [{ src: "/speakers/eugene.webp", alt: "Eugene Dela Cruz" }],
+  },
+  {
+    id: 4,
+    talkTitle: "Momentum's Mirror: The Realm of Generations",
+    speakerLabel: "Jenn Vela and Janina Vela",
+    description:
+      "We live in paradox. What moves us forward can also weigh us down: growth and limits, more and enough. For Gen Z, endless choices bring freedom and overwhelm, while both ambition and contentment carry their own risks. Momentum is finding meaning in the tension between them.",
+    bio:
+      "Jenn and Janina Vela are a dynamic mother-daughter duo who bring together wisdom through their stories. Jenn offers grounded insight shaped by faith and life experience, while Janina, a Gen Z thought leader and social advocate, uses her platform to spark conversations on identity, purpose, and impact.",
+    images: [
+      { src: "/speakers/jenn.webp", alt: "Jenn Vela" },
+      { src: "/speakers/janina.webp", alt: "Janina Vela" },
+    ],
+  },
+];
 
 /* ── Door component ─────────────────────────────────────────────── */
 function Door({
   number,
   isOpen,
   onClick,
+  revealImages,
   compact,
 }: {
   number: number;
   isOpen: boolean;
   onClick: () => void;
+  revealImages: string[];
   compact?: boolean;
 }) {
   const ratio = compact ? "3 / 4" : "250 / 470";
@@ -44,33 +91,29 @@ function Door({
           style={{
             left: "121.2%",
             right: "-121.2%",
-            top: "30.64%",
+            top: 0,
             bottom: 0,
           }}
         >
-          <img
-            src={imgPerson}
-            alt=""
-            className="absolute max-w-none"
-            style={{
-              width: "108%",
-              height: "106.87%",
-              left: "-4%",
-              top: "-0.06%",
-            }}
-          />
+          {revealImages.length > 1 ? (
+            <div className="grid h-full w-full grid-cols-2">
+              {revealImages.slice(0, 2).map((src) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt=""
+                  className="h-full w-full object-cover object-[50%_18%]"
+                />
+              ))}
+            </div>
+          ) : (
+            <img
+              src={revealImages[0]}
+              alt=""
+              className="h-full w-full object-cover object-[50%_18%]"
+            />
+          )}
         </div>
-        <p
-          className="absolute font-display text-white text-center tracking-[-0.96px] whitespace-nowrap"
-          style={{
-            left: "calc(121.2% + 50%)",
-            transform: "translateX(-50%)",
-            top: "5%",
-            fontSize: numSize,
-          }}
-        >
-          {number}
-        </p>
 
         {/* ── Front face of door ── */}
         <div className="absolute inset-0 bg-black border border-tedx-outline-strong rounded-sm" />
@@ -153,6 +196,13 @@ const slots = [
 /* ── Section ────────────────────────────────────────────────────── */
 export default function SpeakersSection() {
   const [openDoor, setOpenDoor] = useState<number | null>(null);
+  const activeSpeaker = speakerDetails.find((speaker) => speaker.id === openDoor) ?? null;
+  const revealImagesByDoor: Record<number, string[]> = {
+    1: ["/speakers/ligot.webp"],
+    2: ["/speakers/jamie.webp"],
+    3: ["/speakers/eugene.webp"],
+    4: ["/speakers/jenn.webp", "/speakers/janina.webp"],
+  };
 
   const toggle = (id: number) => setOpenDoor(openDoor === id ? null : id);
 
@@ -216,6 +266,7 @@ export default function SpeakersSection() {
                   number={i + 1}
                   isOpen={openDoor === i + 1}
                   onClick={() => toggle(i + 1)}
+                  revealImages={revealImagesByDoor[i + 1]}
                 />
               </div>
             </Reveal>
@@ -240,11 +291,36 @@ export default function SpeakersSection() {
                 number={n}
                 isOpen={openDoor === n}
                 onClick={() => toggle(n)}
+                revealImages={revealImagesByDoor[n]}
                 compact
               />
             </Reveal>
           ))}
         </div>
+
+        {activeSpeaker && (
+          <Reveal
+            variant="fade-up"
+            className="mt-8 w-full max-w-[820px] rounded-xl border border-tedx-outline-strong bg-tedx-surface-muted p-4 md:mt-10 md:p-5"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-tedx-red">
+              Talk {activeSpeaker.id}
+            </p>
+            <h3 className="mt-2 font-display text-3xl leading-[0.95] text-tedx-white md:text-4xl">
+              {activeSpeaker.talkTitle}
+            </h3>
+            <p className="mt-3 text-sm font-semibold text-tedx-white">
+              Speaker: {activeSpeaker.speakerLabel}
+            </p>
+
+            <p className="mt-4 text-sm leading-relaxed text-tedx-muted-text">
+              {activeSpeaker.description}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-tedx-muted-text">
+              {activeSpeaker.bio}
+            </p>
+          </Reveal>
+        )}
       </div>
     </section>
   );

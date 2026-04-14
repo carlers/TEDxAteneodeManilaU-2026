@@ -20,6 +20,25 @@
   const imgQuizArrowV3 = "/talks/quiz-arrow-v3.svg";
   const imgCrowd     = "/talks/crowd.png";
 
+  const talksData = [
+    {
+      id: 1,
+      displayLines: ["MIND IN", "MOTION"],
+    },
+    {
+      id: 2,
+      displayLines: ["DARK", "MOMENTUM"],
+    },
+    {
+      id: 3,
+      displayLines: ["SELF-", "MOMENTUM"],
+    },
+    {
+      id: 4,
+      displayLines: ["MOMENTUM'S", "MIRROR"],
+    },
+  ];
+
   const v = (px: number) => `${((px / 1444) * 100).toFixed(3)}vw`;
 
   // Shared hover classes
@@ -39,12 +58,7 @@
             FEATURED <span className="text-tedx-red">TALKS</span>
           </h2>
           <div className="grid grid-cols-2 gap-3">
-            {[
-              { id: 1, lines: ["MIND IN", "MOTION"] },
-              { id: 2, lines: ["THE DARK", "MOMENTUM"] },
-              { id: 3, lines: ["SELF-", "MOMENTUM"] },
-              { id: 4, lines: ["MOMENTUM'S", "MIRROR"] },
-            ].map(({ id, lines }) => (
+            {talksData.map(({ id, displayLines }) => (
               <button key={id}
                 className="relative bg-tedx-red aspect-square overflow-hidden cursor-pointer group transition-colors duration-300 group-hover:bg-white">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -54,7 +68,7 @@
                 <span className={`font-display text-black/25 absolute top-2 right-3 leading-none ${hoverText}`}
                       style={{ fontSize: "clamp(3rem,10vw,5rem)" }}>{id}</span>
                 <div className="absolute bottom-3 left-3 text-left">
-                  {lines.map((l) => (
+                  {displayLines.map((l) => (
                     <p key={l} className={`font-display text-white leading-none ${hoverText}`}
                       style={{ fontSize: "clamp(1.3rem,5vw,2rem)" }}>{l}</p>
                   ))}
@@ -337,6 +351,7 @@
           </div>
 
         </div>
+
       </section>
     );
   }

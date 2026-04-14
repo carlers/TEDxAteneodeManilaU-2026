@@ -42,6 +42,7 @@ async function assertAdmin(
 export const syncAdminEmails = mutationGeneric({
   args: {},
   handler: async (ctx) => {
+    await assertAdmin(ctx);
     const envEmails = process.env.ADMIN_EMAILS ?? "";
     const nextEmails = Array.from(
       new Set(
@@ -107,6 +108,32 @@ export const removeAdmin = mutationGeneric({
   args: { adminId: v.id("admins") },
   handler: async (ctx, args) => {
     await assertAdmin(ctx);
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("Not authenticated.");
+    }
+
+    const user = await ctx.db.get(userId);
+    const currentUserEmail =
+      typeof user?.email === "string" ? user.email.toLowerCase() : null;
+    if (!currentUserEmail) {
+      throw new Error("Authenticated user is missing an email.");
+    }
+
+    const adminToRemove = await ctx.db.get(args.adminId);
+    if (!adminToRemove) {
+      throw new Error("Admin not found.");
+    }
+
+    if (adminToRemove.email === currentUserEmail) {
+      throw new Error("You cannot remove your own admin access.");
+    }
+
+    const currentAdmins = await ctx.db.query("admins").collect();
+    if (currentAdmins.length <= 1) {
+      throw new Error("Cannot remove the last remaining admin.");
+    }
+
     await ctx.db.delete(args.adminId);
     return { ok: true };
   },

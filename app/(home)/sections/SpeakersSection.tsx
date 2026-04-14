@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reveal from "@/app/components/Reveal";
 
 const imgSpotlight = "/speakers/spotlight.png";
@@ -51,6 +51,25 @@ const speakerDetails = [
     ],
   },
 ];
+
+const SPEAKER_IDS = new Set(speakerDetails.map((s) => s.id));
+
+function parseSpeakerHash(hash: string): number | null {
+  const match = /^#speaker-(\d+)$/i.exec(hash);
+  if (!match) return null;
+  const id = Number(match[1]);
+  return SPEAKER_IDS.has(id) ? id : null;
+}
+
+function replaceUrlWithSpeakerHash(id: number | null) {
+  if (typeof window === "undefined") return;
+  const { pathname, search } = window.location;
+  const hash = id != null ? `#speaker-${id}` : "";
+  const next = `${pathname}${search}${hash}`;
+  if (`${pathname}${search}${window.location.hash}` !== next) {
+    window.history.replaceState(null, "", next);
+  }
+}
 
 /* ── Door component ─────────────────────────────────────────────── */
 function Door({
@@ -204,7 +223,30 @@ export default function SpeakersSection() {
     4: ["/speakers/jenn.webp", "/speakers/janina.webp"],
   };
 
-  const toggle = (id: number) => setOpenDoor(openDoor === id ? null : id);
+  useEffect(() => {
+    const id = parseSpeakerHash(window.location.hash);
+    if (id == null) return;
+    queueMicrotask(() => {
+      setOpenDoor(id);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (openDoor == null) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(`speaker-${openDoor}`)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [openDoor]);
+
+  const toggle = (id: number) => {
+    const next = openDoor === id ? null : id;
+    setOpenDoor(next);
+    replaceUrlWithSpeakerHash(next);
+  };
 
   return (
     <section id="speakers" className="w-full bg-black relative overflow-hidden">
@@ -299,27 +341,32 @@ export default function SpeakersSection() {
         </div>
 
         {activeSpeaker && (
-          <Reveal
-            variant="fade-up"
-            className="mt-8 w-full max-w-[820px] rounded-xl border border-tedx-outline-strong bg-tedx-surface-muted p-4 md:mt-10 md:p-5"
+          <div
+            id={`speaker-${activeSpeaker.id}`}
+            className="scroll-mt-24 mt-8 w-full max-w-[820px] md:mt-10"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-tedx-red">
-              Talk {activeSpeaker.id}
-            </p>
-            <h3 className="mt-2 font-display text-3xl leading-[0.95] text-tedx-white md:text-4xl">
-              {activeSpeaker.talkTitle}
-            </h3>
-            <p className="mt-3 text-sm font-semibold text-tedx-white">
-              Speaker: {activeSpeaker.speakerLabel}
-            </p>
+            <Reveal
+              variant="fade-up"
+              className="w-full rounded-xl border border-tedx-outline-strong bg-tedx-surface-muted p-4 md:p-5"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-tedx-red">
+                Talk {activeSpeaker.id}
+              </p>
+              <h3 className="mt-2 font-display text-3xl leading-[0.95] text-tedx-white md:text-4xl">
+                {activeSpeaker.talkTitle}
+              </h3>
+              <p className="mt-3 text-sm font-semibold text-tedx-white">
+                Speaker: {activeSpeaker.speakerLabel}
+              </p>
 
-            <p className="mt-4 text-sm leading-relaxed text-tedx-muted-text">
-              {activeSpeaker.description}
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-tedx-muted-text">
-              {activeSpeaker.bio}
-            </p>
-          </Reveal>
+              <p className="mt-4 text-sm leading-relaxed text-tedx-muted-text">
+                {activeSpeaker.description}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-tedx-muted-text">
+                {activeSpeaker.bio}
+              </p>
+            </Reveal>
+          </div>
         )}
       </div>
     </section>

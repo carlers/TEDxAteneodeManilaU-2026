@@ -1,5 +1,6 @@
 import { mutationGeneric, queryGeneric } from "convex/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
+import { DUPLICATE_REGISTRATION_EMAIL_CODE } from "./registrationErrorCodes";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import type { GenericDataModel, GenericMutationCtx, GenericQueryCtx } from "convex/server";
 
@@ -209,9 +210,7 @@ export const submitRegistration = mutationGeneric({
       .withIndex("by_primaryAttendeeEmail", (q) => q.eq("primaryAttendeeEmail", primaryEmail))
       .first();
     if (existing) {
-      throw new Error(
-        "A registration with this email address already exists. Contact the team if this is an error.",
-      );
+      throw new ConvexError(DUPLICATE_REGISTRATION_EMAIL_CODE);
     }
 
     const now = Date.now();

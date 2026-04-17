@@ -4,8 +4,10 @@ import Image from "next/image";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useMutation } from "convex/react";
+import { ConvexError } from "convex/values";
 import posthog from "posthog-js";
 import { api } from "@/convex/_generated/api";
+import { DUPLICATE_REGISTRATION_EMAIL_CODE } from "@/convex/registrationErrorCodes";
 import type { Id } from "@/convex/_generated/dataModel";
 import {
   formatPhp,
@@ -81,6 +83,25 @@ const steps = [
   "Payment",
 ] as const;
 const draftStorageKey = "tedxRegistrationDraftV2";
+
+const SUPPORT_EMAIL = "tedxateneodemanilau@gmail.com" as const;
+
+type SubmitNotice =
+  | null
+  | { kind: "validation"; text: string }
+  | { kind: "duplicate_email" }
+  | { kind: "server_error"; message: string };
+
+function submitErrorToNotice(error: unknown): Exclude<SubmitNotice, null> {
+  if (error instanceof ConvexError && error.data === DUPLICATE_REGISTRATION_EMAIL_CODE) {
+    return { kind: "duplicate_email" };
+  }
+  const fallback = `We could not complete your submission. Please try again, or email ${SUPPORT_EMAIL} for help.`;
+  if (error instanceof Error && error.message.trim()) {
+    return { kind: "server_error", message: error.message };
+  }
+  return { kind: "server_error", message: fallback };
+}
 
 function isAttendeeComplete(attendee: Attendee) {
   return (
@@ -166,7 +187,7 @@ export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitPhase, setSubmitPhase] = useState<"uploading" | "submitting">("uploading");
   const [copied, setCopied] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState("");
+  const [submitNotice, setSubmitNotice] = useState<SubmitNotice>(null);
   const [stepError, setStepError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [successReceipt, setSuccessReceipt] = useState<SuccessReceipt | null>(null);
@@ -473,6 +494,7 @@ export default function RegisterPage() {
       return;
     }
     setStepError("");
+    setSubmitNotice(null);
     const nextStepNum = getNextStep(currentStep);
     posthog.capture("registration_step_advanced", {
       from_step: currentStep,
@@ -484,6 +506,7 @@ export default function RegisterPage() {
 
   const prevStep = () => {
     setStepError("");
+    setSubmitNotice(null);
     setCurrentStep((step) => getPrevStep(step));
   };
 
@@ -507,13 +530,13 @@ export default function RegisterPage() {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitMessage("");
+    setSubmitNotice(null);
 
     // Validate attendee fields
     const attendeeStep = purchaseMode === "group_of_three" ? 3 : 1;
     const attendeeError = validateStep(attendeeStep);
     if (attendeeError) {
-      setSubmitMessage(attendeeError);
+      setSubmitNotice({ kind: "validation", text: attendeeError });
       setCurrentStep(attendeeStep);
       return;
     }
@@ -523,7 +546,7 @@ export default function RegisterPage() {
     if (Object.keys(paymentErrors).length > 0) {
       setFieldErrors((prev) => ({ ...prev, ...paymentErrors }));
       setCurrentStep(4);
-      setSubmitMessage("Please correct the highlighted fields.");
+      setSubmitNotice({ kind: "validation", text: "Please correct the highlighted fields." });
       return;
     }
 
@@ -564,19 +587,30 @@ export default function RegisterPage() {
         primaryEmail,
         attendeeNames: attendees.map((a) => a.fullName),
       });
-      setSubmitMessage("");
+      setSubmitNotice(null);
       localStorage.removeItem(draftStorageKey);
       setLastSavedAt(null);
       setProofFile(null);
     } catch (errorValue) {
-      const errorMsg = errorValue instanceof Error ? errorValue.message : "Something went wrong during submission.";
-      setSubmitMessage(errorMsg);
-      posthog.captureException(errorValue instanceof Error ? errorValue : new Error(errorMsg), {
-        purchase_mode: purchaseMode,
-        attendee_count: attendees.length,
-      });
+      const notice = submitErrorToNotice(errorValue);
+      setSubmitNotice(notice);
+      const isDuplicate = notice.kind === "duplicate_email";
+      const errorMsg =
+        notice.kind === "server_error"
+          ? notice.message
+          : notice.kind === "duplicate_email"
+            ? "duplicate_registration_email"
+            : notice.text;
+
+      if (!isDuplicate) {
+        posthog.captureException(errorValue instanceof Error ? errorValue : new Error(errorMsg), {
+          purchase_mode: purchaseMode,
+          attendee_count: attendees.length,
+        });
+      }
       posthog.capture("registration_submission_error", {
         error_message: errorMsg,
+        error_kind: isDuplicate ? "duplicate_email" : "other",
         purchase_mode: purchaseMode,
         attendee_count: attendees.length,
       });
@@ -615,7 +649,7 @@ export default function RegisterPage() {
                 </h1>
                 <p className="mt-2 text-sm leading-relaxed text-tedx-muted-text">
                   Thank you, <strong className="text-tedx-white">{successReceipt.primaryName}</strong>.
-                  Your payment is under review — we'll confirm once verified.
+                  Your payment is under review — we will confirm once verified.
                 </p>
               </div>
 
@@ -637,7 +671,7 @@ export default function RegisterPage() {
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-tedx-muted-text">
-                  Save this — you'll need it at the gate and for any support queries.
+                  Save this — you will need it at the gate and for any support queries.
                 </p>
               </div>
 
@@ -726,7 +760,7 @@ export default function RegisterPage() {
                 ? "Sending your payment screenshot"
                 : "Saving your registration"}
             </p>
-            <p className="mt-4 text-[11px] text-tedx-muted-text">Please don't close this page</p>
+            <p className="mt-4 text-[11px] text-tedx-muted-text">Please do not close this page</p>
           </div>
         </div>
       )}
@@ -1367,9 +1401,47 @@ export default function RegisterPage() {
           )}
 
           {stepError && <p className="text-sm text-tedx-accent">{stepError}</p>}
-          <p aria-live="polite" className="text-sm text-tedx-muted-text">
-            {submitMessage}
-          </p>
+          <div aria-live="polite" className="space-y-3">
+            {submitNotice?.kind === "duplicate_email" && (
+              <div
+                role="alert"
+                className="rounded-xl border border-tedx-outline-strong bg-tedx-black/80 p-5 sm:p-6"
+              >
+                <p className="font-league-gothic text-2xl uppercase tracking-wide text-tedx-white sm:text-3xl">
+                  This email is already registered
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-tedx-muted-text">
+                  We already have a submission tied to the primary attendee email on this form. If you need to
+                  update payment proof or attendee details, email us and include your reference code if you have
+                  one.
+                </p>
+                <a
+                  href={`mailto:${SUPPORT_EMAIL}?subject=TEDx%20registration%20help`}
+                  className="mt-4 inline-flex text-sm font-semibold text-tedx-accent underline-offset-2 hover:text-tedx-accent-hover hover:underline"
+                >
+                  {SUPPORT_EMAIL}
+                </a>
+              </div>
+            )}
+            {submitNotice?.kind === "server_error" && (
+              <div role="alert" className="rounded-xl border border-tedx-accent/40 bg-tedx-surface-deep p-4 sm:p-5">
+                <p className="text-xs font-bold uppercase tracking-wider text-tedx-accent">Submission issue</p>
+                <p className="mt-2 text-sm leading-relaxed text-tedx-muted-text">{submitNotice.message}</p>
+                <p className="mt-3 text-xs text-tedx-muted-text">
+                  Need help?{" "}
+                  <a
+                    href={`mailto:${SUPPORT_EMAIL}`}
+                    className="font-semibold text-tedx-accent underline-offset-2 hover:underline"
+                  >
+                    {SUPPORT_EMAIL}
+                  </a>
+                </p>
+              </div>
+            )}
+            {submitNotice?.kind === "validation" && (
+              <p className="text-sm text-tedx-accent">{submitNotice.text}</p>
+            )}
+          </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-tedx-outline-strong pt-5">
             <button
